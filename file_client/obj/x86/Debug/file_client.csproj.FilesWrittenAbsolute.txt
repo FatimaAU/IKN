@@ -1,0 +1,7 @@
+/root/Desktop/Exercise_6_c#/Exercise_6_c#/file_client/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/Desktop/Exercise_6_c#/Exercise_6_c#/file_client/bin/Debug/LIB.dll
+/root/Desktop/Exercise_6_c#/Exercise_6_c#/file_client/bin/Debug/LIB.dll.mdb
+/root/Desktop/Exercise_6_c#/Exercise_6_c#/file_client/bin/Debug/file_client.exe.mdb
+/root/Desktop/Exercise_6_c#/Exercise_6_c#/file_client/bin/Debug/file_client.exe
+/root/Desktop/Exercise_6_c#/Exercise_6_c#/file_client/obj/x86/Debug/file_client.exe
+/root/Desktop/Exercise_6_c#/Exercise_6_c#/file_client/obj/x86/Debug/file_client.exe.mdb
