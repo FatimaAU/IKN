@@ -62,11 +62,11 @@ namespace tcp
 			byte[] outStream = System.Text.Encoding.ASCII.GetBytes(testmsg + "$");
 			serverStream.Write(outStream, 0, outStream.Length);
 			serverStream.Flush();
-//			//Receive
-//			byte[] inStream = new byte[10025];
-//			serverStream.Read(inStream, 0, inStream.Length);
-//			string returndata = System.Text.Encoding.ASCII.GetString(inStream);
-//			returndata = returndata.Substring (0, returndata.IndexOf ("$"));
+			//			//Receive
+			//			byte[] inStream = new byte[10025];
+			//			serverStream.Read(inStream, 0, inStream.Length);
+			//			string returndata = System.Text.Encoding.ASCII.GetString(inStream);
+			//			returndata = returndata.Substring (0, returndata.IndexOf ("$"));
 		}
 	}
 }
