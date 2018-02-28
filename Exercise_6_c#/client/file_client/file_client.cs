@@ -26,6 +26,34 @@ namespace tcp
 		private file_client (string[] args)
 		{
 			// TO DO Your own code
+
+			//char nullTerm = '0';
+
+			System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
+
+			if (args.Length != 2) 
+			{
+				Console.WriteLine ("Please supply two arguments: IP-address of the server and filename");
+				Environment.Exit (0);
+			}
+
+			clientSocket.Connect(args[0], PORT);
+			Console.WriteLine ($"Connected to \"{args[0]}\"");
+
+			NetworkStream serverStream = clientSocket.GetStream();
+
+			Console.WriteLine($"Requesting filename \"{args[1]}\"");
+			LIB.writeTextTCP (serverStream, args [1]); 
+
+			string msg = LIB.readTextTCP (serverStream);
+			Console.WriteLine (msg);
+
+			//Send
+//			string testmsg = "Test";
+//			NetworkStream serverStream = clientSocket.GetStream();
+//			byte[] outStream = System.Text.Encoding.ASCII.GetBytes(testmsg + "$");
+//			serverStream.Write(outStream, 0, outStream.Length);
+//			serverStream.Flush();
 		}
 
 		/// <summary>
@@ -51,17 +79,18 @@ namespace tcp
 		public static void Main (string[] args)
 		{
 			Console.WriteLine ("Client starts...");
-			//new file_client(args);
+			new file_client(args);
+//			System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
+//			clientSocket.Connect("10.0.0.1", PORT);
+			///Console.WriteLine (args[1]);
+////
+////			//Send
+//			string testmsg = "Test";
+//			NetworkStream serverStream = clientSocket.GetStream();
+//			byte[] outStream = System.Text.Encoding.ASCII.GetBytes(testmsg + "$");
+//			serverStream.Write(outStream, 0, outStream.Length);
+//			serverStream.Flush();
 
-			System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
-			clientSocket.Connect("10.0.0.1", PORT);
-
-			//Send
-			string testmsg = "Test";
-			NetworkStream serverStream = clientSocket.GetStream();
-			byte[] outStream = System.Text.Encoding.ASCII.GetBytes(testmsg + "$");
-			serverStream.Write(outStream, 0, outStream.Length);
-			serverStream.Flush();
 			//			//Receive
 			//			byte[] inStream = new byte[10025];
 			//			serverStream.Read(inStream, 0, inStream.Length);
