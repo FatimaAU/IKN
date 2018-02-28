@@ -1,0 +1,5 @@
+/root/Documents/IKN/Exercise_6_c#/server/LIB/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/Documents/IKN/Exercise_6_c#/server/LIB/bin/Debug/LIB.dll.mdb
+/root/Documents/IKN/Exercise_6_c#/server/LIB/bin/Debug/LIB.dll
+/root/Documents/IKN/Exercise_6_c#/server/LIB/obj/Debug/LIB.dll
+/root/Documents/IKN/Exercise_6_c#/server/LIB/obj/Debug/LIB.dll.mdb

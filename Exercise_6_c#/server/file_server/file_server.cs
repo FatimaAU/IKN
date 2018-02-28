@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.IO;
 
 
 namespace tcp
@@ -30,7 +31,35 @@ namespace tcp
 		/// </summary>
 		private file_server ()
 		{
-			// TO DO Your own code
+			// Starts server and accepts a client
+
+			TcpListener serverSocket = new TcpListener(IPAddress.Any,PORT);
+			TcpClient clientSocket = default(TcpClient);
+			serverSocket.Start();
+			clientSocket = serverSocket.AcceptTcpClient();
+			Console.WriteLine("Accepted connection from client");
+
+			NetworkStream clientStream = clientSocket.GetStream();
+			string filename = LIB.readTextTCP (clientStream);
+			Console.WriteLine ("Filename: " + filename);
+
+			string path = "/root/Documents/IKN/Exercise_6_c#/";
+
+			if (LIB.check_File_Exists(path + filename) == 0)
+			{
+				string errorMsg = "File '" + filename + "' not found at '" + path + "'";
+				Console.WriteLine(errorMsg);
+				LIB.writeTextTCP (clientStream, errorMsg);
+				
+			} 
+			else 
+			{
+				long fileSize = new System.IO.FileInfo (path + filename).Length;
+				string fileMsg = "Size: " + fileSize;
+
+				Console.WriteLine(fileMsg);
+				LIB.writeTextTCP (clientStream, fileMsg);
+			}
 		}
 
 		/// <summary>
@@ -47,6 +76,8 @@ namespace tcp
 		/// </param>
 		private void sendFile (String fileName, long fileSize, NetworkStream io)
 		{
+			Byte[] fileToSend = new Byte[fileSize];
+			FileStream fs = File.Open ("/root/Documents/IKN/Exercise_6_c#/" + fileName);								
 			// TO DO Your own code
 		}
 
@@ -58,43 +89,33 @@ namespace tcp
 		/// </param>
 		static void Main(string[] args)
 		{
+			Console.WriteLine ("Server starts...");
+			new file_server();
 
-			TcpListener serverSocket = new TcpListener(IPAddress.Any,PORT);
-			int requestCount = 0;
-			TcpClient clientSocket = default(TcpClient);
-			serverSocket.Start();
-			Console.WriteLine(" >> Server Started");
-			clientSocket = serverSocket.AcceptTcpClient();
-			Console.WriteLine(" >> Accept connection from client");
-			requestCount = 0;
-
-			//while ((true))
-			{
-				try
-				{
-					requestCount = requestCount + 1;
-					NetworkStream networkStream = clientSocket.GetStream();
-					byte[] bytesFrom = new byte[10025];
-					networkStream.Read(bytesFrom, 0, bytesFrom.Length);
-					string dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom);
-					dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf("$"));
-					//dataFromClient = dataFromClient.Substring(0, 1);
-					Console.WriteLine(" >> Data from client - " + dataFromClient);
-
-					string serverResponse = "Last Message from client" + dataFromClient;
-					Byte[] sendBytes = Encoding.ASCII.GetBytes(serverResponse);
-					networkStream.Write(sendBytes, 0, sendBytes.Length);
-					networkStream.Flush();
-					Console.WriteLine(" >> " + serverResponse);
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine(ex.ToString());
-				}
-			}
-
-			clientSocket.Close();
-			serverSocket.Stop();
+//				try
+//				{
+//					NetworkStream networkStream = clientSocket.GetStream();
+//					byte[] bytesFrom = new byte[10025];
+//					networkStream.Read(bytesFrom, 0, bytesFrom.Length);
+//					string dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom);
+//					dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf("0"));
+//					//dataFromClient = dataFromClient.Substring(0, 1);
+//					Console.WriteLine(" >> Data from client - " + dataFromClient);
+//
+//					string serverResponse = "Last Message from client" + dataFromClient;
+//					Byte[] sendBytes = Encoding.ASCII.GetBytes(serverResponse);
+//					networkStream.Write(sendBytes, 0, sendBytes.Length);
+//					networkStream.Flush();
+//					Console.WriteLine(" >> " + serverResponse);
+//				}
+//				catch (Exception ex)
+//				{
+//					Console.WriteLine(ex.ToString());
+//				}
+//
+//
+//			clientSocket.Close();
+//			serverSocket.Stop();
 			Console.WriteLine(" >> exit");
 			Console.ReadLine();
 		}
