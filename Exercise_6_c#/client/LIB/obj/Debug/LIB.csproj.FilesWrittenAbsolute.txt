@@ -1,5 +1,5 @@
-/root/Documents/IKN/Exercise_6_c#/client/LIB/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
-/root/Documents/IKN/Exercise_6_c#/client/LIB/bin/Debug/LIB.dll.mdb
-/root/Documents/IKN/Exercise_6_c#/client/LIB/bin/Debug/LIB.dll
-/root/Documents/IKN/Exercise_6_c#/client/LIB/obj/Debug/LIB.dll
-/root/Documents/IKN/Exercise_6_c#/client/LIB/obj/Debug/LIB.dll.mdb
+/root/Desktop/Exercise_6_c#/Exercise_6_c#/LIB/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/Desktop/Exercise_6_c#/Exercise_6_c#/LIB/bin/Debug/LIB.dll.mdb
+/root/Desktop/Exercise_6_c#/Exercise_6_c#/LIB/bin/Debug/LIB.dll
+/root/Desktop/Exercise_6_c#/Exercise_6_c#/LIB/obj/Debug/LIB.dll
+/root/Desktop/Exercise_6_c#/Exercise_6_c#/LIB/obj/Debug/LIB.dll.mdb
