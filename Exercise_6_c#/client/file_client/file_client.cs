@@ -38,11 +38,11 @@ namespace tcp
 			}
 
 			clientSocket.Connect(args[0], PORT);
-			Console.WriteLine ($"Connected to \"{args[0]}\"");
+			Console.WriteLine ($"Connected to '{args[0]}'");
 
 			NetworkStream serverStream = clientSocket.GetStream();
 
-			Console.WriteLine($"Requesting filename \"{args[1]}\"");
+			Console.WriteLine($"Requesting filename '{args[1]}'");
 			LIB.writeTextTCP (serverStream, args [1]); 
 
 			long fileSize = LIB.getFileSizeTCP (serverStream);
@@ -80,10 +80,21 @@ namespace tcp
 			FileStream file = new FileStream (fileName, FileMode.Create, FileAccess.Write);
 			byte[] data = new byte[fileSize];
 
-			int bytesRead = io.Read (data, 0, data.Length);
-			file.Write (data, 0, bytesRead);
+			long totalBytes = 0;
+			int bytesRead = 0;
 
 			Console.WriteLine ("Reading file " + fileName + " ... ");
+
+			while (totalBytes != fileSize) 
+			{
+				bytesRead = io.Read (data, 0, data.Length);
+				file.Write (data, 0, bytesRead);
+
+				totalBytes += bytesRead;
+
+				Console.WriteLine ("Read bytes: " + bytesRead.ToString () + "\t Total bytes read:" + totalBytes);
+			}
+
 			Console.WriteLine ("File received");
 
 			io.Close ();
