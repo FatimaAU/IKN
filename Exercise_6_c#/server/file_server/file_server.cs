@@ -45,21 +45,24 @@ namespace tcp
 
 			string path = "/root/Documents/IKN/Exercise_6_c#/";
 
-			if (LIB.check_File_Exists(path + filename) == 0)
+			long fileSize = LIB.check_File_Exists (path + filename);
+
+			if (fileSize == 0)
 			{
 				string errorMsg = "File '" + filename + "' not found at '" + path + "'";
 				Console.WriteLine(errorMsg);
-				LIB.writeTextTCP (clientStream, errorMsg);
-				
+				LIB.writeTextTCP (clientStream, fileSize.ToString());
+				return;
+				//string newFilename = LIB.readTextTCP (clientStream);
 			} 
-			else 
-			{
-				long fileSize = new System.IO.FileInfo (path + filename).Length;
-				string fileMsg = "Size: " + fileSize;
 
-				Console.WriteLine(fileMsg);
-				LIB.writeTextTCP (clientStream, fileMsg);
-			}
+			Console.WriteLine("Size: " + fileSize);
+			LIB.writeTextTCP (clientStream, fileSize.ToString());
+
+			sendFile (filename, fileSize, clientStream);
+
+
+
 		}
 
 		/// <summary>
@@ -76,8 +79,20 @@ namespace tcp
 		/// </param>
 		private void sendFile (String fileName, long fileSize, NetworkStream io)
 		{
+			Console.WriteLine ("Sending file ..");
+
+			FileStream fs = new FileStream ("/root/Documents/IKN/Exercise_6_c#/" + fileName, FileMode.Open, FileAccess.Read);
 			Byte[] fileToSend = new Byte[fileSize];
-			FileStream fs = File.Open ("/root/Documents/IKN/Exercise_6_c#/" + fileName);								
+
+			fs.Read (fileToSend, 0, fileToSend.Length);
+			io.Write (fileToSend, 0, fileToSend.Length);
+
+			Console.WriteLine ("File sent");
+
+			//fileToSend = File.ReadAllBytes ("/root/Documents/IKN/Exercise_6_c#/" + fileName);
+			//io.Write (fileToSend, 0, (int)fileSize);
+			//io.Write
+			//while((
 			// TO DO Your own code
 		}
 
