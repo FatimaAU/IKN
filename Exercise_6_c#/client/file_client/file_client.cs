@@ -45,8 +45,18 @@ namespace tcp
 			Console.WriteLine($"Requesting filename \"{args[1]}\"");
 			LIB.writeTextTCP (serverStream, args [1]); 
 
-			string msg = LIB.readTextTCP (serverStream);
-			Console.WriteLine (msg);
+			long fileSize = LIB.getFileSizeTCP (serverStream);
+			if (fileSize == 0) 
+			{
+				Console.WriteLine ("File not found. Terminating");
+				Environment.Exit (0);
+			}
+				
+			//string msg = LIB.readTextTCP (serverStream);
+			Console.WriteLine ("File size: " + fileSize);
+
+			receiveFile (args [1], serverStream, fileSize);
+
 
 			//Send
 //			string testmsg = "Test";
@@ -65,9 +75,18 @@ namespace tcp
 		/// <param name='io'>
 		/// Network stream for reading from the server
 		/// </param>
-		private void receiveFile (String fileName, NetworkStream io)
+		private void receiveFile (String fileName, NetworkStream io, long fileSize)
 		{
-			// TO DO Your own code
+			FileStream file = new FileStream (fileName, FileMode.Create, FileAccess.Write);
+			byte[] data = new byte[fileSize];
+
+			int bytesRead = io.Read (data, 0, data.Length);
+			file.Write (data, 0, bytesRead);
+
+			Console.WriteLine ("Reading file " + fileName + " ... ");
+			Console.WriteLine ("File received");
+
+			io.Close ();
 		}
 
 		/// <summary>
