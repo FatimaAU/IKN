@@ -43,7 +43,7 @@ namespace tcp
 			string filename = LIB.readTextTCP (clientStream);
 			Console.WriteLine ("Filename: " + filename);
 
-			string path = "/root/Documents/IKN/Exercise_6_c#/";
+			string path = "/root/Desktop/Exercise_6_c#/Exercise_6_c#/file_server/";
 
 			long fileSize = LIB.check_File_Exists (path + filename);
 
@@ -81,13 +81,21 @@ namespace tcp
 		{
 			Console.WriteLine ("Sending file ..");
 
-			FileStream fs = new FileStream ("/root/Documents/IKN/Exercise_6_c#/" + fileName, FileMode.Open, FileAccess.Read);
-			Byte[] fileToSend = new Byte[fileSize];
+			FileStream fs = new FileStream ("/root/Desktop/Exercise_6_c#/Exercise_6_c#/file_server/" + fileName, FileMode.Open, FileAccess.Read);
+			Byte[] fileToSend = new Byte[BUFSIZE]; //Changed to bufsize maks send
 
-			fs.Read (fileToSend, 0, fileToSend.Length);
-			io.Write (fileToSend, 0, fileToSend.Length);
+			int bytesToSend;
 
-			Console.WriteLine ("File sent");
+			while ((bytesToSend = fs.Read (fileToSend, 0, fileToSend.Length)) > 0) //I exist to keep sending bytes until I only got 0 bytes to send left 
+			{
+				
+				io.Write (fileToSend, 0, bytesToSend); //I must send that byte
+
+				Console.WriteLine ($"send {bytesToSend} bytes");
+			}
+			//fs.Read (fileToSend, 0, bytesToSend); //I read the bytes but why should I read stuff at the server?
+
+			Console.WriteLine (">>File sent");
 
 			//fileToSend = File.ReadAllBytes ("/root/Documents/IKN/Exercise_6_c#/" + fileName);
 			//io.Write (fileToSend, 0, (int)fileSize);
