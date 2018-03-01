@@ -43,27 +43,26 @@ namespace tcp
 			NetworkStream serverStream = clientSocket.GetStream();
 
 			Console.WriteLine($"Requesting filename '{args[1]}'");
-			LIB.writeTextTCP (serverStream, args [1]); 
+
+			string filename = args [1];
+			LIB.writeTextTCP (serverStream, filename); 
 
 			long fileSize = LIB.getFileSizeTCP (serverStream);
-			if (fileSize == 0) 
+
+			while (fileSize == 0) 
 			{
-				Console.WriteLine ("File not found. Terminating");
-				Environment.Exit (0);
+				Console.WriteLine ("File not found. Input a valid file");
+				filename = Console.ReadLine ();
+
+				Console.WriteLine($"Requesting filename '{filename}'");
+
+				LIB.writeTextTCP (serverStream, filename);
+				fileSize = LIB.getFileSizeTCP (serverStream);
 			}
 				
-			//string msg = LIB.readTextTCP (serverStream);
 			Console.WriteLine ("File size: " + fileSize);
 
-			receiveFile (args [1], serverStream, fileSize);
-
-
-			//Send
-//			string testmsg = "Test";
-//			NetworkStream serverStream = clientSocket.GetStream();
-//			byte[] outStream = System.Text.Encoding.ASCII.GetBytes(testmsg + "$");
-//			serverStream.Write(outStream, 0, outStream.Length);
-//			serverStream.Flush();
+			receiveFile (filename, serverStream, fileSize);
 		}
 
 		/// <summary>
@@ -96,8 +95,6 @@ namespace tcp
 			}
 
 			Console.WriteLine ("File received");
-
-			io.Close ();
 		}
 
 		/// <summary>
@@ -110,22 +107,6 @@ namespace tcp
 		{
 			Console.WriteLine ("Client starts...");
 			new file_client(args);
-//			System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
-//			clientSocket.Connect("10.0.0.1", PORT);
-			///Console.WriteLine (args[1]);
-////
-////			//Send
-//			string testmsg = "Test";
-//			NetworkStream serverStream = clientSocket.GetStream();
-//			byte[] outStream = System.Text.Encoding.ASCII.GetBytes(testmsg + "$");
-//			serverStream.Write(outStream, 0, outStream.Length);
-//			serverStream.Flush();
-
-			//			//Receive
-			//			byte[] inStream = new byte[10025];
-			//			serverStream.Read(inStream, 0, inStream.Length);
-			//			string returndata = System.Text.Encoding.ASCII.GetString(inStream);
-			//			returndata = returndata.Substring (0, returndata.IndexOf ("$"));
 		}
 	}
 }
