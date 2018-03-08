@@ -33,7 +33,7 @@ namespace tcp
 
 			if (args.Length != 2) 
 			{
-				Console.WriteLine ("Please supply two arguments: IP-address of the server and filename");
+				Console.WriteLine ("Please supply two arguments: IP-address of the server and path + filename");
 				Environment.Exit (0);
 			}
 
@@ -77,23 +77,24 @@ namespace tcp
 		private void receiveFile (String fileName, NetworkStream io, long fileSize)
 		{
 			FileStream file = new FileStream (fileName, FileMode.Create, FileAccess.Write);
-			byte[] data = new byte[fileSize];
+			byte[] data = new byte[BUFSIZE]; //Vi modtager kun 1k bytes af gangen
 
-			long totalBytes = 0;
-			int bytesRead = 0;
+			int totalBytes = 0;
+			int bytesRead;
 
 			Console.WriteLine ("Reading file " + fileName + " ... ");
 
-			while (totalBytes != fileSize) 
+			//while(fileSize != totalBytes)
+			while ((bytesRead = io.Read(data, 0, data.Length)) > 0) //Nu bliver den ved indtil længden af det den modtager er 0
 			{
-				bytesRead = io.Read (data, 0, data.Length);
+				//bytesRead = io.Read (data, 0, data.Length);
 				file.Write (data, 0, bytesRead);
 
 				totalBytes += bytesRead;
 
 				Console.WriteLine ("Read bytes: " + bytesRead.ToString () + "\t Total bytes read:" + totalBytes);
 			}
-
+				
 			Console.WriteLine ("File received");
 		}
 
