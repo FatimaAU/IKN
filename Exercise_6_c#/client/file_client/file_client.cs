@@ -88,6 +88,7 @@ namespace tcp
 			while ((bytesRead = io.Read(data, 0, data.Length)) > 0) //Nu bliver den ved indtil længden af det den modtager er 0
 			{
 				//bytesRead = io.Read (data, 0, data.Length);
+				Console.WriteLine("bytesRead: " + bytesRead);
 				file.Write (data, 0, bytesRead);
 
 				totalBytes += bytesRead;
