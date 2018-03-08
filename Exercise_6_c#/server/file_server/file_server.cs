@@ -31,7 +31,7 @@ namespace tcp
 		/// </summary>
 		private file_server ()
 		{
-			string path = "/root/Documents/IKN/Exercise_6_c#/";
+			string path = "/root/Documents/IKN/Exercise_6_c#/server/file_server/";
 
 
 			// Starts server and accepts a client
