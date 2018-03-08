@@ -31,7 +31,7 @@ namespace tcp
 		/// </summary>
 		private file_server ()
 		{
-			string path = "/root/Documents/IKN/Exercise_6_c#/server/file_server/";
+			//string path = "/root/Desktop/Exercise_6_c#/Exercise_6_c#/file_server/";
 
 
 			// Starts server and accepts a client
@@ -48,17 +48,17 @@ namespace tcp
 			NetworkStream clientStream = clientSocket.GetStream();
 
 			string filename = LIB.readTextTCP (clientStream);
-			long fileSize = LIB.check_File_Exists (path + filename);
+			long fileSize = LIB.check_File_Exists (filename);
 
 			while (fileSize == 0)
 			{
-				string errorMsg = "File '" + filename + "' not found at '" + path + "'";
+				string errorMsg = "File '" + filename + "' not found";
 				Console.WriteLine(errorMsg);
 
 				LIB.writeTextTCP (clientStream, fileSize.ToString());
 
 				filename = LIB.readTextTCP (clientStream);
-				fileSize = LIB.check_File_Exists (path + filename);
+				fileSize = LIB.check_File_Exists (filename);
 
 			} 
 
@@ -66,7 +66,7 @@ namespace tcp
 			Console.WriteLine("Size: " + fileSize);
 			LIB.writeTextTCP (clientStream, fileSize.ToString());
 
-			sendFile (filename,  path, fileSize, clientStream);
+			sendFile (filename, fileSize, clientStream);
 
 			clientSocket.Close();
 			serverSocket.Stop();
@@ -84,18 +84,21 @@ namespace tcp
 		/// <param name='io'>
 		/// Network stream for writing to the client.
 		/// </param>
-		private void sendFile (String fileName, string path, long fileSize, NetworkStream io)
+		private void sendFile (String fileName, long fileSize, NetworkStream io)
 		{
 			Console.WriteLine ("Sending file ..");
 
-			FileStream fs = new FileStream (path + fileName, FileMode.Open, FileAccess.Read);
+			fileSize = LIB.check_File_Exists (fileName);
+			int bitethatpackage = Convert.ToInt32 (Math.Ceiling (Convert.ToDouble (fileSize) / Convert.ToDouble (BUFSIZE)));
+
+			FileStream fs = new FileStream (fileName, FileMode.Open, FileAccess.Read);
 			Byte[] fileToSend = new Byte[BUFSIZE]; //Changed to bufsize maks send6
 
 			int bytesToSend;
 
 			while ((bytesToSend = fs.Read (fileToSend, 0, fileToSend.Length)) > 0) //I exist to keep sending bytes until I only got 0 bytes to send left 
 			{
-				io.Write (fileToSend, 0, bytesToSend); //I must send that byte
+				io.Write (fileToSend, 0, bitethatpackage); //I must send that byte
 
 				Console.WriteLine ($"Send {bytesToSend} bytes");
 
