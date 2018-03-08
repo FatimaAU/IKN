@@ -50,7 +50,7 @@ namespace tcp
 			string filename = LIB.readTextTCP (clientStream);
 			long fileSize = LIB.check_File_Exists (path + filename);
 
-			while (LIB.check_File_Exists (path + filename) == 0)
+			while (fileSize == 0)
 			{
 				string errorMsg = "File '" + filename + "' not found at '" + path + "'";
 				Console.WriteLine(errorMsg);
