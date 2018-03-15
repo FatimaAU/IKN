@@ -19,7 +19,7 @@ namespace tcp
 		/// The BUFSIZE
 		/// </summary>
 		const int BUFSIZE = 1000;
-
+		int counter = 0;
 		/// <summary>
 		/// Initializes a new instance of the <see cref="file_server"/> class.
 		/// Opretter en socket.
@@ -89,22 +89,23 @@ namespace tcp
 			Console.WriteLine ("Sending file ..");
 
 			fileSize = LIB.check_File_Exists (fileName);
-			int bitethatpackage = Convert.ToInt32 (Math.Ceiling (Convert.ToDouble (fileSize) / Convert.ToDouble (BUFSIZE)));
 
 			FileStream fs = new FileStream (fileName, FileMode.Open, FileAccess.Read);
 			Byte[] fileToSend = new Byte[BUFSIZE]; //Changed to bufsize maks send6
 
-			int bytesToSend;
+			int bytesToSend = 0;
 
 			while ((bytesToSend = fs.Read (fileToSend, 0, fileToSend.Length)) > 0) //I exist to keep sending bytes until I only got 0 bytes to send left 
 			{
-				io.Write (fileToSend, 0, bitethatpackage); //I must send that byte
+				
+				io.Write (fileToSend, 0,bytesToSend); //I must send that byte
 
 				Console.WriteLine ($"Send {bytesToSend} bytes");
 
 			}
-
+			counter++;
 			Console.WriteLine ("File sent");
+			Console.WriteLine($"Sent counter: {counter}");
 
 		}
 
