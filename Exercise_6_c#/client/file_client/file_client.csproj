@@ -38,10 +38,4 @@
     <Compile Include="file_client.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\LIB\LIB.csproj">
-      <Project>{B74C6B12-6130-4C53-B95D-4F6F998A24CC}</Project>
-      <Name>LIB</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

@@ -76,24 +76,28 @@ namespace tcp
 		/// </param>
 		private void receiveFile (String fileName, NetworkStream io, long fileSize)
 		{
-			FileStream file = new FileStream (fileName, FileMode.Create, FileAccess.Write);
+			fileName = LIB.extractFileName(fileName);
+			string dataDir = "/root/Desktop/ExFiles/";
+			Directory.CreateDirectory (dataDir);
+			FileStream file = new FileStream (dataDir + fileName, FileMode.Create, FileAccess.Write);
 			byte[] data = new byte[BUFSIZE]; //Vi modtager kun 1k bytes af gangen
+
 
 			int totalBytes = 0;
 			int bytesRead;
 
 			Console.WriteLine ("Reading file " + fileName + " ... ");
 
-			//while(fileSize != totalBytes)
-			while ((bytesRead = io.Read(data, 0, data.Length)) > 0) //Nu bliver den ved indtil længden af det den modtager er 0
+			//while ((bytesRead = io.Read(data, 0, data.Length)) > 0) //Nu bliver den ved indtil længden af det den modtager er 0
+			while(fileSize > totalBytes)
 			{
-				//bytesRead = io.Read (data, 0, data.Length);
-				Console.WriteLine("bytesRead: " + bytesRead);
+				bytesRead = io.Read (data, 0, data.Length);
 				file.Write (data, 0, bytesRead);
 
 				totalBytes += bytesRead;
 
 				Console.WriteLine ("Read bytes: " + bytesRead.ToString () + "\t Total bytes read:" + totalBytes);
+
 			}
 				
 			Console.WriteLine ("File received");
