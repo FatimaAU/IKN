@@ -19,13 +19,16 @@ namespace udp
 
 			while (true) 
 			{
-				IPEndPoint ep = new IPEndPoint(IPAddress.Any, PORT);
-				var data = server.Receive (ref ep); //listen on port 9000
-				Console.Write("receive data from: " + ep.ToString());
+				IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, PORT);
+				Byte[] receivedData = server.Receive (ref endPoint); //listen on port 9000
 
-				byte[] dataToSend = new byte[1] { 1 };
-				//dataToSend = ;
-				server.Send(dataToSend, dataToSend.Length, ep); //reply back
+				string data = Encoding.ASCII.GetString (receivedData);
+
+				Console.Write("receive data from: " + data);
+
+//				byte[] dataToSend = new byte[1] { 1 };
+//				//dataToSend = ;
+//				server.Send(dataToSend, dataToSend.Length, ep); //reply back
 			}
 		
 		}
