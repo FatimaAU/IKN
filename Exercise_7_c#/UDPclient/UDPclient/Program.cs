@@ -11,35 +11,46 @@ namespace udp
 	class UDPClient
 	{
 		const int PORT = 9000;
+		const int BUFSIZE = 1000;
 
 
 		private UDPClient()
 		{
-			var client = new UdpClient ();
+			var client = new UdpClient (PORT);
 
-			IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1", PORT);
+			IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), PORT);
 
-			client.Connect(EndPoint, PORT);
+			client.Connect(endPoint);
 
-			
+			while (true) 
+			{
 				
-			Byte[] receivedData = server.Receive (ref endPoint); //listen on port 9000
+//				IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("10.0.0.1"), PORT);
+//
+//				client.Connect(endPoint);
 
-			string data = Encoding.ASCII.GetString (receivedData);
+				string test = Console.ReadLine();
 
-			Console.Write("receive data from: " + data);
+				byte[] sentData = Encoding.ASCII.GetBytes (test);
+
+				//string data = Encoding.ASCII.GetString (sentData);
+
+				client.Send (sentData, sentData.Length);
+
+				//Console.Write("sent data: " + test);
+				//System.Threading.Thread.Sleep (1000);
+			}
 
 			//				byte[] dataToSend = new byte[1] { 1 };
 			//				//dataToSend = ;
 			//				server.Send(dataToSend, dataToSend.Length, ep); //reply back
-			}
-
 		}
 
 		static void Main (string[] args)
 		{
-			Console.WriteLine ("Server starts...");
+			Console.WriteLine ("Client...");
 			new UDPClient ();
 		}
 	}
 }
+

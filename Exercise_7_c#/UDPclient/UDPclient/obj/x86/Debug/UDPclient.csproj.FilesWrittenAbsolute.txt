@@ -1,0 +1,5 @@
+/root/Documents/IKN/Exercise_7_c#/UDPclient/UDPclient/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/Documents/IKN/Exercise_7_c#/UDPclient/UDPclient/bin/Debug/UDPclient.exe.mdb
+/root/Documents/IKN/Exercise_7_c#/UDPclient/UDPclient/bin/Debug/UDPclient.exe
+/root/Documents/IKN/Exercise_7_c#/UDPclient/UDPclient/obj/x86/Debug/UDPclient.exe
+/root/Documents/IKN/Exercise_7_c#/UDPclient/UDPclient/obj/x86/Debug/UDPclient.exe.mdb
