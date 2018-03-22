@@ -24,18 +24,38 @@ namespace udp
 
 				string data = Encoding.ASCII.GetString (receivedData);
 
-				if (data == "U") 
-				{
-											
-				}
 
-				Console.Write("receive data from: " + data);
+				GetMeasurement (data);
+				Console.WriteLine (data);
+				byte[] sentdataback = Encoding.ASCII.GetBytes (data);
+				server.Send (sentdataback, sentdataback.Length);					
+
+
+				Console.WriteLine("receive data from: " + data);
 
 //				byte[] dataToSend = new byte[1] { 1 };
 //				//dataToSend = ;
 //				server.Send(dataToSend, dataToSend.Length, ep); //reply back
 			}
 		
+		}
+
+		public string GetMeasurement(string letter)
+		{
+//			string uptime = System.IO.File.ReadAllText ("root/proc/uptime");
+//			string loadavg = System.IO.File.ReadAllText ("/~/proc/loadavg");
+
+			if (letter == "u") 
+			{
+				return "derp";
+			}
+			if (letter == "U")
+			{
+				return "herp";
+			}
+			else
+				return "not the right letter";
+
 		}
 	
 		static void Main (string[] args)
