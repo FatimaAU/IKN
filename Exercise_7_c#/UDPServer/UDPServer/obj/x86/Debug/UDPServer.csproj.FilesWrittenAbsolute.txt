@@ -1,1 +1,5 @@
 /root/Documents/IKN/Exercise_7_c#/UDPServer/UDPServer/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/Documents/IKN/Exercise_7_c#/UDPServer/UDPServer/bin/Debug/UDPServer.exe.mdb
+/root/Documents/IKN/Exercise_7_c#/UDPServer/UDPServer/bin/Debug/UDPServer.exe
+/root/Documents/IKN/Exercise_7_c#/UDPServer/UDPServer/obj/x86/Debug/UDPServer.exe
+/root/Documents/IKN/Exercise_7_c#/UDPServer/UDPServer/obj/x86/Debug/UDPServer.exe.mdb

@@ -20,9 +20,14 @@ namespace udp
 			while (true) 
 			{
 				IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, PORT);
-				Byte[] receivedData = server.Receive (ref endPoint); //listen on port 9000
+				byte[] receivedData = server.Receive (ref endPoint); //listen on port 9000
 
 				string data = Encoding.ASCII.GetString (receivedData);
+
+				if (data == "U") 
+				{
+											
+				}
 
 				Console.Write("receive data from: " + data);
 

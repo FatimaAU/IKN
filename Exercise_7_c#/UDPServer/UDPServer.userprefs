@@ -2,7 +2,7 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="UDPServer/Program.cs">
     <Files>
-      <File FileName="UDPServer/Program.cs" Line="23" Column="12" />
+      <File FileName="UDPServer/Program.cs" Line="12" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
