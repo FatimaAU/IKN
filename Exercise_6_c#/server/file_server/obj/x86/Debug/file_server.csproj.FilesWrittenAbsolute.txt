@@ -12,3 +12,10 @@
 /root/Desktop/IKNFatima/IKN/Exercise_6_c#/server/file_server/obj/x86/Debug/file_server.exe.mdb
 /root/Desktop/IKNFatima/IKN/Exercise_6_c#/server/file_server/bin/Debug/LIB.dll
 /root/Desktop/IKNFatima/IKN/Exercise_6_c#/server/file_server/bin/Debug/LIB.dll.mdb
+/root/Documents/IKN/Exercise_6_c#/server/file_server/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/Documents/IKN/Exercise_6_c#/server/file_server/bin/Debug/file_server.exe.mdb
+/root/Documents/IKN/Exercise_6_c#/server/file_server/bin/Debug/file_server.exe
+/root/Documents/IKN/Exercise_6_c#/server/file_server/obj/x86/Debug/file_server.exe
+/root/Documents/IKN/Exercise_6_c#/server/file_server/obj/x86/Debug/file_server.exe.mdb
+/root/Documents/IKN/Exercise_6_c#/server/file_server/bin/Debug/LIB.dll
+/root/Documents/IKN/Exercise_6_c#/server/file_server/bin/Debug/LIB.dll.mdb

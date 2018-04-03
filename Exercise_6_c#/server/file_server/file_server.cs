@@ -15,11 +15,12 @@ namespace tcp
 		/// The PORT
 		/// </summary>
 		const int PORT = 9000;
+		// const string = "HANS";
 		/// <summary>
 		/// The BUFSIZE
 		/// </summary>
 		const int BUFSIZE = 1000;
-		int counter = 0;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="file_server"/> class.
 		/// Opretter en socket.
@@ -31,9 +32,6 @@ namespace tcp
 		/// </summary>
 		private file_server ()
 		{
-			//string path = "/root/Desktop/Exercise_6_c#/Exercise_6_c#/file_server/";
-
-
 			// Starts server and accepts a client
 			Console.WriteLine("Listening for client ..");
 
@@ -66,7 +64,7 @@ namespace tcp
 			Console.WriteLine("Size: " + fileSize);
 			LIB.writeTextTCP (clientStream, fileSize.ToString());
 
-			sendFile (filename, fileSize, clientStream);
+			sendFile (filename, clientStream);
 
 			clientSocket.Close();
 			serverSocket.Stop();
@@ -78,17 +76,15 @@ namespace tcp
 		/// <param name='fileName'>
 		/// The filename.
 		/// </param>
-		/// <param name='fileSize'>
+		/// <param name='fileSize'> 
 		/// The filesize.
 		/// </param>
 		/// <param name='io'>
 		/// Network stream for writing to the client.
 		/// </param>
-		private void sendFile (String fileName, long fileSize, NetworkStream io)
+		private void sendFile (String fileName, NetworkStream io)
 		{
 			Console.WriteLine ("Sending file ..");
-
-			fileSize = LIB.check_File_Exists (fileName);
 
 			FileStream fs = new FileStream (fileName, FileMode.Open, FileAccess.Read);
 			Byte[] fileToSend = new Byte[BUFSIZE]; //Changed to bufsize maks send6
@@ -103,10 +99,7 @@ namespace tcp
 				Console.WriteLine ($"Send {bytesToSend} bytes");
 
 			}
-			counter++;
 			Console.WriteLine ("File sent");
-			Console.WriteLine($"Sent counter: {counter}");
-
 		}
 
 		/// <summary>

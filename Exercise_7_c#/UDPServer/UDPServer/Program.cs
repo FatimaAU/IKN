@@ -36,8 +36,6 @@ namespace udp
 				// Send data back
 				byte[] sentdataback = Encoding.ASCII.GetBytes (measure);
 				server.Send (sentdataback, sentdataback.Length, endPoint);					
-
-
 			}
 		
 		}
@@ -60,8 +58,6 @@ namespace udp
 				default:
 					Console.WriteLine ("Bad input. Sending error message");
 					return "Bad input. Valid inputs are l (L) or u (U)\n";
-			
-
 			}
 			return "Reading from " + filePath + ": " + File.ReadAllText (filePath);
 		}
