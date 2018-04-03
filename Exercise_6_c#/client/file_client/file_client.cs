@@ -25,11 +25,7 @@ namespace tcp
 		/// </param>
 		private file_client (string[] args)
 		{
-			// TO DO Your own code
-
-			//char nullTerm = '0';
-
-			System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
+			TcpClient clientSocket = new TcpClient();
 
 			if (args.Length != 2) 
 			{
