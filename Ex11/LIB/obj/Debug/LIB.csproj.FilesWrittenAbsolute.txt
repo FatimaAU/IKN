@@ -1,0 +1,12 @@
+/root/Exercise/13 C#/Exercise_13_c#/LIB/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/Exercise/13 C#/Exercise_13_c#/LIB/bin/Debug/LIB.dll.mdb
+/root/Exercise/13 C#/Exercise_13_c#/LIB/bin/Debug/LIB.dll
+/root/Exercise/13 C#/Exercise_13_c#/LIB/obj/Debug/LIB.dll
+/root/Exercise/13 C#/Exercise_13_c#/LIB/obj/Debug/LIB.dll.mdb
+/root/Exercise/13 C#/Exercise_13_c#/LIB/bin/Debug/System.dll
+/root/IKN/Exercise_12/Exercise_12_csharp/LIB/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/IKN/Exercise_12/Exercise_12_csharp/LIB/bin/Debug/LIB.dll.mdb
+/root/IKN/Exercise_12/Exercise_12_csharp/LIB/bin/Debug/LIB.dll
+/root/IKN/Exercise_12/Exercise_12_csharp/LIB/obj/Debug/LIB.dll
+/root/IKN/Exercise_12/Exercise_12_csharp/LIB/obj/Debug/LIB.dll.mdb
+/root/IKN/Exercise_12/Exercise_12_csharp/LIB/bin/Debug/System.dll

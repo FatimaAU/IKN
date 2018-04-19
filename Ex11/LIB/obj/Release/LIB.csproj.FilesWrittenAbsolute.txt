@@ -1,0 +1,8 @@
+/root/Downloads/Exercise_13_c#/LIB/obj/Release/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/Downloads/Exercise_13_c#/LIB/bin/Release/LIB.dll
+/root/Downloads/Exercise_13_c#/LIB/obj/Release/LIB.dll
+/root/Downloads/Exercise_13_c#/LIB/bin/Release/System.dll
+/root/IKN/Exercise_12/Exercise_12_csharp/LIB/obj/Release/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/IKN/Exercise_12/Exercise_12_csharp/LIB/bin/Release/LIB.dll
+/root/IKN/Exercise_12/Exercise_12_csharp/LIB/obj/Release/LIB.dll
+/root/IKN/Exercise_12/Exercise_12_csharp/LIB/bin/Release/System.dll

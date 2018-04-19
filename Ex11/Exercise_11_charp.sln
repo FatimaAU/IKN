@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Link", "Link\Link.csproj", "{6D10C85B-63E3-416B-A3B8-0E6498B7C1C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport", "Transport\Transport.csproj", "{981C1C09-64A7-47CD-A093-30083CCFFD03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "file_server", "file_server\file_server.csproj", "{421BDA4C-999D-4B14-B645-E15BA7136554}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "file_client", "file_client\file_client.csproj", "{DB485B50-5258-42F1-ABC9-2774EEE3360F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LIB", "LIB\LIB.csproj", "{D8DF9D64-4B60-4D4C-9782-733750DEA33B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{421BDA4C-999D-4B14-B645-E15BA7136554}.Debug|x86.ActiveCfg = Debug|x86
+		{421BDA4C-999D-4B14-B645-E15BA7136554}.Debug|x86.Build.0 = Debug|x86
+		{421BDA4C-999D-4B14-B645-E15BA7136554}.Release|x86.ActiveCfg = Release|x86
+		{421BDA4C-999D-4B14-B645-E15BA7136554}.Release|x86.Build.0 = Release|x86
+		{6D10C85B-63E3-416B-A3B8-0E6498B7C1C1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6D10C85B-63E3-416B-A3B8-0E6498B7C1C1}.Debug|x86.Build.0 = Debug|Any CPU
+		{6D10C85B-63E3-416B-A3B8-0E6498B7C1C1}.Release|x86.ActiveCfg = Release|Any CPU
+		{6D10C85B-63E3-416B-A3B8-0E6498B7C1C1}.Release|x86.Build.0 = Release|Any CPU
+		{981C1C09-64A7-47CD-A093-30083CCFFD03}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{981C1C09-64A7-47CD-A093-30083CCFFD03}.Debug|x86.Build.0 = Debug|Any CPU
+		{981C1C09-64A7-47CD-A093-30083CCFFD03}.Release|x86.ActiveCfg = Release|Any CPU
+		{981C1C09-64A7-47CD-A093-30083CCFFD03}.Release|x86.Build.0 = Release|Any CPU
+		{D8DF9D64-4B60-4D4C-9782-733750DEA33B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D8DF9D64-4B60-4D4C-9782-733750DEA33B}.Debug|x86.Build.0 = Debug|Any CPU
+		{D8DF9D64-4B60-4D4C-9782-733750DEA33B}.Release|x86.ActiveCfg = Release|Any CPU
+		{D8DF9D64-4B60-4D4C-9782-733750DEA33B}.Release|x86.Build.0 = Release|Any CPU
+		{DB485B50-5258-42F1-ABC9-2774EEE3360F}.Debug|x86.ActiveCfg = Debug|x86
+		{DB485B50-5258-42F1-ABC9-2774EEE3360F}.Debug|x86.Build.0 = Debug|x86
+		{DB485B50-5258-42F1-ABC9-2774EEE3360F}.Release|x86.ActiveCfg = Release|x86
+		{DB485B50-5258-42F1-ABC9-2774EEE3360F}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = file_client\file_client.csproj
+	EndGlobalSection
+EndGlobal
