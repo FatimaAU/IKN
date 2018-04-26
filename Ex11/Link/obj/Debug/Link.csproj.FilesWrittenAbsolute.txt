@@ -1,1 +1,5 @@
 /root/Documents/IKN/Ex11/Link/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/Documents/IKN/Ex11/Link/bin/Debug/Link.dll.mdb
+/root/Documents/IKN/Ex11/Link/bin/Debug/Link.dll
+/root/Documents/IKN/Ex11/Link/obj/Debug/Link.dll
+/root/Documents/IKN/Ex11/Link/obj/Debug/Link.dll.mdb

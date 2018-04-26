@@ -1,0 +1,7 @@
+/root/Documents/IKN/Ex11/Transport/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/Documents/IKN/Ex11/Transport/bin/Debug/Transport.dll.mdb
+/root/Documents/IKN/Ex11/Transport/bin/Debug/Transport.dll
+/root/Documents/IKN/Ex11/Transport/obj/Debug/Transport.dll
+/root/Documents/IKN/Ex11/Transport/obj/Debug/Transport.dll.mdb
+/root/Documents/IKN/Ex11/Transport/bin/Debug/Link.dll
+/root/Documents/IKN/Ex11/Transport/bin/Debug/Link.dll.mdb

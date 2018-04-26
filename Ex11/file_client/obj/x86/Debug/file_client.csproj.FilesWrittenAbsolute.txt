@@ -1,0 +1,11 @@
+/root/Documents/IKN/Ex11/file_client/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/Documents/IKN/Ex11/file_client/bin/Debug/file_client.exe.mdb
+/root/Documents/IKN/Ex11/file_client/bin/Debug/file_client.exe
+/root/Documents/IKN/Ex11/file_client/obj/x86/Debug/file_client.exe
+/root/Documents/IKN/Ex11/file_client/obj/x86/Debug/file_client.exe.mdb
+/root/Documents/IKN/Ex11/file_client/bin/Debug/LIB.dll
+/root/Documents/IKN/Ex11/file_client/bin/Debug/LIB.dll.mdb
+/root/Documents/IKN/Ex11/file_client/bin/Debug/Transport.dll
+/root/Documents/IKN/Ex11/file_client/bin/Debug/Transport.dll.mdb
+/root/Documents/IKN/Ex11/file_client/bin/Debug/Link.dll
+/root/Documents/IKN/Ex11/file_client/bin/Debug/Link.dll.mdb

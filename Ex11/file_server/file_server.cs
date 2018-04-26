@@ -13,12 +13,14 @@ namespace Application
 		/// </summary>
 		private const int BUFSIZE = 1000;
 		private const string APP = "FILE_SERVER";
+		Transport transport = new Transport (BUFSIZE, APP);
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="file_server"/> class.
 		/// </summary>
 		private file_server ()
 		{
+			sendFile ("dd", 33, transport);
 			// TO DO Your own code
 		}
 
@@ -36,6 +38,9 @@ namespace Application
 		/// </param>
 		private void sendFile(String fileName, long fileSize, Transport transport)
 		{
+			string inString = "AXBY";
+			byte[] toSend = Encoding.ASCII.GetBytes (inString);
+			transport.send (toSend, toSend.Length);
 			// TO DO Your own code
 		}
 

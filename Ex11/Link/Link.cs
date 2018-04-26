@@ -34,11 +34,11 @@ namespace Linklaget
 			#if DEBUG
 				if(APP.Equals("FILE_SERVER"))
 				{
-					serialPort = new SerialPort("/dev/ttySn0",115200,Parity.None,8,StopBits.One);
+					serialPort = new SerialPort("/dev/tnt1",115200,Parity.None,8,StopBits.One);
 				}
 				else
 				{
-					serialPort = new SerialPort("/dev/ttySn1",115200,Parity.None,8,StopBits.One);
+					serialPort = new SerialPort("/dev/tnt0",115200,Parity.None,8,StopBits.One);
 				}
 			#else
 				serialPort = new SerialPort("/dev/ttyS1",115200,Parity.None,8,StopBits.One);
@@ -66,25 +66,23 @@ namespace Linklaget
 		/// </param>
 		public void send (byte[] buf, int size)
 		{
-			//StringBuilder data;
+			//string inString = Encoding.ASCII.GetString (buf);
 
-			string inString = Encoding.ASCII.GetBytes (buffer);
+			StringBuilder data = new StringBuilder();
 
-			StringBuilder data = new StringBuilder(inString);
-
-			data.Append (DELIMITER);
+			data.Append ((char)DELIMITER);
 
 			for(int i = 0; i < size; i++)
 			{
 				if (buf [i] == 'A')
-					data.Append ("AB");
+					data.Append ("BC");
 				else if (buf [i] == 'B')
 					data.Append ("BD");
 				else
-					data.Append(buf[i]);
+					data.Append((char)buf[i]);
 			}
 
-			data.Append (DELIMITER);
+			data.Append ((char)DELIMITER);
 
 			string dataToSend = data.ToString ();
 
@@ -101,15 +99,38 @@ namespace Linklaget
 		{
 			int size = serialPort.Read (buffer, 0, buffer.Length);
 
+			// Make sure first index is DELIMITER
 			if (buffer [0] == DELIMITER) 
 			{
+				// Loop through from next index
 				for (int i = 1; i < size; i++) 
 				{
-					
+					// Index of buf (to client) is i-1 (starting from 1 instead of 0)
+					int bufIndex = i - 1;
+
+					if (buffer [i] == 'B') 
+					{
+						// Must check on next index to nsert A or B
+						switch(buffer[i + 1])
+						{
+						case (byte)'C':
+							buf [bufIndex] = (byte)'A';
+							++i;
+							break;
+						case (byte)'D':
+							buf [bufIndex] = (byte)'B';	
+							++i;
+							break;
+						}
+					} 
+					else if (buffer [i] == DELIMITER)
+						break;
+					else
+						buf [bufIndex] = buffer [i];
 				}
-			}
-	    	// TO DO Your own code
-			return 0;
+			}	    	
+
+			return buf.Length;
 		}
 	}
 }
