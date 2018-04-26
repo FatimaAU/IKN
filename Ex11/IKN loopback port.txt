@@ -1,0 +1,6 @@
+Download: https://sourceforge.net/projects/tty0tty/?source=typ_redirect
+/Downloads/tty0tty-1.2/module# make
+apt-install jed
+jed tty0tty.c - include stuff
+/Downloads/tty0tty-1.2/module# make
+/Downloads/tty0tty-1.2/module# insmod
