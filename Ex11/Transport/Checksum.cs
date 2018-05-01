@@ -23,6 +23,15 @@ namespace Transportlaget
     		return (~((sum & 0xFFFF)+(sum >> 16)))&0xFFFF;
 		}
 
+		/// <summary>
+		/// Checks if checksum is equal to calculated checksum.
+		/// </summary>
+		/// <param name='buf'>
+		/// Buffer of header + data.
+		/// </param>
+		/// <param name='size'>
+		/// Size of the buffer
+		/// </param>
 		public bool checkChecksum(byte[] buf, int size)
 		{
 			byte[] buffer = new byte[size-2];
@@ -31,6 +40,15 @@ namespace Transportlaget
 			return( checksum(buffer) == (long)(buf[(int)TransCHKSUM.CHKSUMHIGH] << 8 | buf[(int)TransCHKSUM.CHKSUMLOW]));
 		}
 
+		/// <summary>
+		/// Calculates checksum of buffer with payload
+		/// </summary>
+		/// <param name='buf'>
+		/// Buffer of header + data.
+		/// </param>
+		/// <param name='size'>
+		/// Size of the buffer
+		/// </param>
 		public void calcChecksum (ref byte[] buf, int size)
 		{
 			byte[] buffer = new byte[size-2];
