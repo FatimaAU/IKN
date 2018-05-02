@@ -49,7 +49,7 @@ namespace Linklaget
 			buffer = new byte[(BUFSIZE*2)];
 
 			// Uncomment the next line to use timeout
-			//serialPort.ReadTimeout = 500;
+			serialPort.ReadTimeout = 500;
 
 			serialPort.DiscardInBuffer ();
 			serialPort.DiscardOutBuffer ();
@@ -66,8 +66,6 @@ namespace Linklaget
 		/// </param>
 		public void send (byte[] buf, int size)
 		{
-			//string inString = Encoding.ASCII.GetString (buf);
-
 			StringBuilder data = new StringBuilder();
 
 			data.Append ((char)DELIMITER);

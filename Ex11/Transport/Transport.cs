@@ -117,31 +117,44 @@ namespace Transportlaget
 		/// </param>
 		public void send(byte[] buf, int size)
 		{
-			//Tilsætter buffer
-			buf = buffer;
-			// TO DO Your own code
+			buffer = buf;
+
+			buffer [(int)TransCHKSUM.SEQNO] = seqNo;
+			buffer [(int)TransCHKSUM.TYPE] = TransType.DATA;
 
 			//Tilføjer de to første "bytes" på buf
-			checksum.calcChecksum (ref buf, size);
+			checksum.calcChecksum (ref buffer, size);
 
-			//Sender data
-			link.send(buf, size);
-			while (errorCount <= 5) 
+			while (errorCount < 5) 
 			{
-				if (receiveAck == 0) 
+				link.send(buffer, size);
+
+				seqNo = receiveAck ();
+
+				if (old_seqNo ==  seqNo) 
 				{
-					seqNo = 1;
+					Console.WriteLine ($"Error: Did not receive correctly at old_seqNo: {old_seqNo}, current seqNo: {seqNo}\n");
 					errorCount++;
-					link.send (buf, size);
-				}
-				else if (receiveAck == 1) 
+				} 
+				else if (old_seqNo != seqNo) 
 				{
+					Console.WriteLine ($"Received correctly with old_seqno: {old_seqNo}, current seqNo: {seqNo}\n");
+					buffer [(int)TransCHKSUM.SEQNO] = (seqNo + 1) % 2;
+					old_seqNo = seqNo;
+					errorCount = 0;
+					break;
+				} 
+				else 
+				{
+					Console.WriteLine ("Timed out\n");
 					errorCount++;
-					//Hvis errorcount er 5 så skal den stoppe med at sende
-					link.send (buf, size);
 				}
+
+				link.send (buf, size);
 			}
 
+			Console.WriteLine ($"Ended session with {errorCount} errors)");
+			Console.ReadLine ();
 		}
 
 		/// <summary>
@@ -153,16 +166,17 @@ namespace Transportlaget
 		public int receive (ref byte[] buf)
 		{
 			
-			//modtager data med checksum
+			//Receives data with full header
+			//link.receive
 			link.receive (ref buf);
 
-			//Checker data, for korrekt checksum
-			if(checksum.checkChecksum (buf) == true)
+			//Check data for corret checksum
+			if(checksum.checkChecksum (buf))
 			{
-				sendAck ();
+				sendAck(true);
 			}
-			else
-			// TO DO Your own code
+//			else
+//			// TO DO Your own code
 			return link.receive (ref buf);
 		}
 	}
