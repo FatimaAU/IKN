@@ -50,7 +50,8 @@ namespace Linklaget
 
 			// Uncomment the next line to use timeout
 			serialPort.ReadTimeout = 500;
-
+			serialPort.WriteTimeout = 500;
+			Console.WriteLine ("Timeout " +serialPort.WriteTimeout);
 			serialPort.DiscardInBuffer ();
 			serialPort.DiscardOutBuffer ();
 		}

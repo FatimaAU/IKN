@@ -9,3 +9,14 @@
 /root/Documents/IKN/Ex11/file_server/bin/Debug/LIB.dll.mdb
 /root/Documents/IKN/Ex11/file_server/bin/Debug/Link.dll
 /root/Documents/IKN/Ex11/file_server/bin/Debug/Link.dll.mdb
+/root/Desktop/Ex11/file_server/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/Desktop/Ex11/file_server/bin/Debug/file_server.exe.mdb
+/root/Desktop/Ex11/file_server/bin/Debug/file_server.exe
+/root/Desktop/Ex11/file_server/obj/x86/Debug/file_server.exe
+/root/Desktop/Ex11/file_server/obj/x86/Debug/file_server.exe.mdb
+/root/Desktop/Ex11/file_server/bin/Debug/Transport.dll
+/root/Desktop/Ex11/file_server/bin/Debug/Transport.dll.mdb
+/root/Desktop/Ex11/file_server/bin/Debug/LIB.dll
+/root/Desktop/Ex11/file_server/bin/Debug/LIB.dll.mdb
+/root/Desktop/Ex11/file_server/bin/Debug/Link.dll
+/root/Desktop/Ex11/file_server/bin/Debug/Link.dll.mdb

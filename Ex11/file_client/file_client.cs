@@ -60,6 +60,7 @@ namespace Application
 		/// </param>
 		public static void Main (string[] args)
 		{
+			Console.WriteLine ("Client");
 			new file_client(args);
 		}
 	}

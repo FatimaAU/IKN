@@ -104,6 +104,8 @@ namespace Transportlaget
 			ackBuf [(int)TransCHKSUM.TYPE] = (byte)(int)TransType.ACK;
 			checksum.calcChecksum (ref ackBuf, (int)TransSize.ACKSIZE);
 			link.send(ackBuf, (int)TransSize.ACKSIZE);
+
+
 		}
 
 		/// <summary>
@@ -117,42 +119,60 @@ namespace Transportlaget
 		/// </param>
 		public void send(byte[] buf, int size)
 		{
-			buffer = buf;
+			Console.WriteLine ("Test");
 
+			//Seq
 			buffer [(int)TransCHKSUM.SEQNO] = seqNo;
-			buffer [(int)TransCHKSUM.TYPE] = TransType.DATA;
+			//Type
+			buffer [(int)TransCHKSUM.TYPE] = (int)TransType.DATA;
+
+			Array.Copy(buf, 0, buffer, 4, buf.Length);
+
+			Console.WriteLine ("length is: " + buffer.Length);
 
 			//Tilføjer de to første "bytes" på buf
 			checksum.calcChecksum (ref buffer, size);
 
+			//Sat til at blive ved med løkken indtil den får det korrekt
 			while (errorCount < 5) 
 			{
-				link.send(buffer, size);
+				try
+				{
+					link.send(buffer, size+4);		
 
-				seqNo = receiveAck ();
+					seqNo = receiveAck ();
 
-				if (old_seqNo ==  seqNo) 
-				{
-					Console.WriteLine ($"Error: Did not receive correctly at old_seqNo: {old_seqNo}, current seqNo: {seqNo}\n");
-					errorCount++;
-					link.send (buf, size);
-				} 
-				else if (old_seqNo != seqNo) 
-				{
-					Console.WriteLine ($"Received correctly with old_seqno: {old_seqNo}, current seqNo: {seqNo}\n");
-					buffer [(int)TransCHKSUM.SEQNO] = (seqNo + 1) % 2;
-					old_seqNo = seqNo;
-					errorCount = 0;
-				} 
-				else 
-				{
-					Console.WriteLine ("Timed out, resending\n");
-					errorCount++;
-					link.send (buf, size);
+					if (old_seqNo ==  seqNo) 
+					{
+						Console.WriteLine ($"Error: Did not receive correctly at old_seqNo: {old_seqNo}, current seqNo: {seqNo}\n");
+						errorCount++;
+						link.send (buf, size);
+					} 
+					else if (old_seqNo != seqNo) 
+					{
+						Console.WriteLine ($"Received correctly with old_seqno: {old_seqNo}, current seqNo: {seqNo}\n");
+						buffer [(int)TransCHKSUM.SEQNO] = (byte)((seqNo + 1) % 2);
+						old_seqNo = seqNo;
+						errorCount = 0;
+						break;
+					} 
+					else 
+					{
+						Console.WriteLine ("Timed out, resending in try\n");
+						errorCount++;
+						link.send (buf, size);
+					}
 				}
+				catch 
+				{
+					Console.WriteLine ("Timed out, resending in catch\n");
+					errorCount++;
+					//link.send (buf, size);
+				}
+			//old_seqNo = DEFAULT_SEQNO; //Vil ændre retning i applikationslageret åbenbart
 			}
 
-			Console.WriteLine ($"Ended transport session with {errorCount} errors)");
+			Console.WriteLine ($"Ended transport session with {errorCount} errors\n");
 			Console.ReadLine ();
 		}
 
@@ -170,7 +190,7 @@ namespace Transportlaget
 			link.receive (ref buf);
 
 			//Check data for corret checksum
-			if(checksum.checkChecksum (buf))
+			if(checksum.checkChecksum (buf, recvSize))
 			{
 				sendAck(true);
 			}
