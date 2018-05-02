@@ -70,7 +70,7 @@ namespace Linklaget
 
 			StringBuilder data = new StringBuilder();
 
-			data.Append (DELIMITER);
+			data.Append ((char)DELIMITER);
 
 			for(int i = 0; i < size; i++)
 			{
@@ -82,7 +82,7 @@ namespace Linklaget
 					data.Append((char)buf[i]);
 			}
 
-			data.Append (DELIMITER);
+			data.Append ((char)DELIMITER);
 
 			string dataToSend = data.ToString ();
 

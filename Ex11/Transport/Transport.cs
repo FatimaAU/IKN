@@ -117,8 +117,31 @@ namespace Transportlaget
 		/// </param>
 		public void send(byte[] buf, int size)
 		{
+			//Tilsætter buffer
+			buf = buffer;
 			// TO DO Your own code
+
+			//Tilføjer de to første "bytes" på buf
+			checksum.calcChecksum (ref buf, size);
+
+			//Sender data
 			link.send(buf, size);
+			while (errorCount <= 5) 
+			{
+				if (receiveAck == 0) 
+				{
+					seqNo = 1;
+					errorCount++;
+					link.send (buf, size);
+				}
+				else if (receiveAck == 1) 
+				{
+					errorCount++;
+					//Hvis errorcount er 5 så skal den stoppe med at sende
+					link.send (buf, size);
+				}
+			}
+
 		}
 
 		/// <summary>
@@ -129,6 +152,16 @@ namespace Transportlaget
 		/// </param>
 		public int receive (ref byte[] buf)
 		{
+			
+			//modtager data med checksum
+			link.receive (ref buf);
+
+			//Checker data, for korrekt checksum
+			if(checksum.checkChecksum (buf) == true)
+			{
+				sendAck ();
+			}
+			else
 			// TO DO Your own code
 			return link.receive (ref buf);
 		}
