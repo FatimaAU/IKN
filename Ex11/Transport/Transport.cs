@@ -135,6 +135,7 @@ namespace Transportlaget
 				{
 					Console.WriteLine ($"Error: Did not receive correctly at old_seqNo: {old_seqNo}, current seqNo: {seqNo}\n");
 					errorCount++;
+					link.send (buf, size);
 				} 
 				else if (old_seqNo != seqNo) 
 				{
@@ -142,18 +143,16 @@ namespace Transportlaget
 					buffer [(int)TransCHKSUM.SEQNO] = (seqNo + 1) % 2;
 					old_seqNo = seqNo;
 					errorCount = 0;
-					break;
 				} 
 				else 
 				{
-					Console.WriteLine ("Timed out\n");
+					Console.WriteLine ("Timed out, resending\n");
 					errorCount++;
+					link.send (buf, size);
 				}
-
-				link.send (buf, size);
 			}
 
-			Console.WriteLine ($"Ended session with {errorCount} errors)");
+			Console.WriteLine ($"Ended transport session with {errorCount} errors)");
 			Console.ReadLine ();
 		}
 
