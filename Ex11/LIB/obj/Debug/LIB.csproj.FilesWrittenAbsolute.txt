@@ -4,3 +4,9 @@
 /root/Documents/IKN/Ex11/LIB/obj/Debug/LIB.dll
 /root/Documents/IKN/Ex11/LIB/obj/Debug/LIB.dll.mdb
 /root/Documents/IKN/Ex11/LIB/bin/Debug/System.dll
+/root/Desktop/Ex11/LIB/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/root/Desktop/Ex11/LIB/bin/Debug/LIB.dll.mdb
+/root/Desktop/Ex11/LIB/bin/Debug/LIB.dll
+/root/Desktop/Ex11/LIB/obj/Debug/LIB.dll
+/root/Desktop/Ex11/LIB/obj/Debug/LIB.dll.mdb
+/root/Desktop/Ex11/LIB/bin/Debug/System.dll
