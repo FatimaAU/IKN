@@ -131,6 +131,7 @@ namespace Transportlaget
 			//Tilføjer de to første "bytes" på buf
 			checksum.calcChecksum (ref buffer, size);
 
+			Console.WriteLine ("t");
 			//Sat til at blive ved med løkken indtil den får det korrekt
 			while (errorCount < 5) 
 			{

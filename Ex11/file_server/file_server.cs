@@ -38,7 +38,7 @@ namespace Application
 		/// </param>
 		private void sendFile(String fileName, long fileSize, Transport transport)
 		{
-			//Console.WriteLine ("Write something");
+			Console.WriteLine ("Sending AXBY in file server\n");
 			//string inString = Console.ReadLine ();
 			string inString = "AXBY";
 			byte[] toSend = Encoding.ASCII.GetBytes (inString);
