@@ -176,19 +176,21 @@ namespace Transportlaget
 		/// </param>
 		public int receive (ref byte[] buf)
 		{
-			
 			//Receives data with full header
+
+			//byte[] temp;
 			//link.receive
-			link.receive (ref buf);
+			recvSize = link.receive (ref buf);
 
 			//Check data for corret checksum
-			if(checksum.checkChecksum (buf, recvSize))
+			if (checksum.checkChecksum (buf, recvSize)) 
 			{
-				sendAck(true);
-			}
-//			else
-//			// TO DO Your own code
-			return link.receive (ref buf);
+				sendAck (true);
+			} 
+			else
+				Console.WriteLine ("Error");
+
+			return recvSize;
 		}
 	}
 }
