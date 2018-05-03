@@ -38,11 +38,11 @@ namespace Application
 		/// </param>
 		private void sendFile(String fileName, long fileSize, Transport transport)
 		{
-			Console.WriteLine ("Write something");
+			//Console.WriteLine ("Write something");
 			//string inString = Console.ReadLine ();
 			string inString = "AXBY";
 			byte[] toSend = Encoding.ASCII.GetBytes (inString);
-			Console.WriteLine ("Sending to transport");
+			//Console.WriteLine ("Sending to transport");
 			transport.send (toSend, toSend.Length);
 			// TO DO Your own code
 		}
@@ -55,7 +55,7 @@ namespace Application
 		/// </param>
 		public static void Main (string[] args)
 		{
-			Console.WriteLine ("Hans");
+			//Console.WriteLine ("Hans");
 			new file_server();
 
 		}

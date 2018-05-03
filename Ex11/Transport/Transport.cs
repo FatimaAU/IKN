@@ -119,8 +119,6 @@ namespace Transportlaget
 		/// </param>
 		public void send(byte[] buf, int size)
 		{
-			Console.WriteLine ("Test");
-
 			//Seq
 			buffer [(int)TransCHKSUM.SEQNO] = seqNo;
 			//Type
@@ -142,30 +140,24 @@ namespace Transportlaget
 
 					seqNo = receiveAck ();
 
-					if (old_seqNo ==  seqNo) 
+					if (old_seqNo == seqNo) 
 					{
-						Console.WriteLine ($"Error: Did not receive correctly at old_seqNo: {old_seqNo}, current seqNo: {seqNo}\n");
+						Console.WriteLine ($"Error: Did not receive correctly (old_seqNo: {old_seqNo}, current seqNo: {seqNo})\n");
 						errorCount++;
-						link.send (buf, size);
+						//link.send (buf, size);
 					} 
-					else if (old_seqNo != seqNo) 
+					else
 					{
-						Console.WriteLine ($"Received correctly with old_seqno: {old_seqNo}, current seqNo: {seqNo}\n");
+						Console.WriteLine ($"Received correctly (old_seqno: {old_seqNo}, current seqNo: {seqNo})\n");
 						buffer [(int)TransCHKSUM.SEQNO] = (byte)((seqNo + 1) % 2);
 						old_seqNo = seqNo;
 						errorCount = 0;
 						break;
 					} 
-					else 
-					{
-						Console.WriteLine ("Timed out, resending in try\n");
-						errorCount++;
-						link.send (buf, size);
-					}
 				}
 				catch 
 				{
-					Console.WriteLine ("Timed out, resending in catch\n");
+					Console.WriteLine ("Timed out, resending\n");
 					errorCount++;
 					//link.send (buf, size);
 				}
