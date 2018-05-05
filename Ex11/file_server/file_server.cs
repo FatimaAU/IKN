@@ -3,11 +3,11 @@ using System.IO;
 using System.Text;
 using Transportlaget;
 using Library;
-
 namespace Application
 {
 	class file_server
 	{
+		
 		/// <summary>
 		/// The BUFSIZE
 		/// </summary>
@@ -55,6 +55,7 @@ namespace Application
 		/// </param>
 		public static void Main (string[] args)
 		{
+			
 			//Console.WriteLine ("Hans");
 			new file_server();
 

@@ -8,3 +8,5 @@
 /root/Desktop/Ex11/Link/bin/Debug/Link.dll
 /root/Desktop/Ex11/Link/obj/Debug/Link.dll
 /root/Desktop/Ex11/Link/obj/Debug/Link.dll.mdb
+/root/Documents/IKN/Ex11/Link/bin/Debug/LIB.dll
+/root/Documents/IKN/Ex11/Link/bin/Debug/LIB.dll.mdb

@@ -1,5 +1,7 @@
 using System;
 using Linklaget;
+using System.Text;
+using Library;
 
 /// <summary>
 /// Transport.
@@ -104,8 +106,6 @@ namespace Transportlaget
 			ackBuf [(int)TransCHKSUM.TYPE] = (byte)(int)TransType.ACK;
 			checksum.calcChecksum (ref ackBuf, (int)TransSize.ACKSIZE);
 			link.send(ackBuf, (int)TransSize.ACKSIZE);
-
-
 		}
 
 		/// <summary>
@@ -126,12 +126,9 @@ namespace Transportlaget
 
 			Array.Copy(buf, 0, buffer, 4, buf.Length);
 
-			Console.WriteLine ("length is: " + buffer.Length);
-
 			//Tilføjer de to første "bytes" på buf
-			checksum.calcChecksum (ref buffer, size);
+			checksum.calcChecksum (ref buffer, buffer.Length);
 
-			Console.WriteLine ("t");
 			//Sat til at blive ved med løkken indtil den får det korrekt
 			while (errorCount < 5) 
 			{
@@ -177,16 +174,34 @@ namespace Transportlaget
 		/// </param>
 		public int receive (ref byte[] buf)
 		{
+			//byte[] temp = new byte[1000+(int)TransSize.ACKSIZE];
+
 			//Receives data with full header
+			recvSize = link.receive (ref buffer);
 
-			//byte[] temp;
-			//link.receive
-			recvSize = link.receive (ref buf);
+			//Do some checking on Seq and Type
 
+			//Create new array with only checksum and data
+			//byte[] checksumAndData = new byte[recvSize - 2];
+
+
+			//checksumAndData = receivedWithHeader.To
+			//Copy checksum from receivedWithHeader to checksumAndData
+			//Array.Copy (receivedWithHeader, 0, checksumAndData, 0, 2);
+
+			//Copy data from receivedWithHeader to checksumAndData
+			//Array.Copy(receivedWithHeader, 4, checksumAndData, 2, receivedWithHeader.Length);
+
+			//Console.WriteLine (LIB.ToString (checksumAndData));
+
+			for (int i = 0; i < recvSize; i++)
+				Console.WriteLine ("in transport: " + buffer [i]);
+		
 			//Check data for corret checksum
-			if (checksum.checkChecksum (buf, recvSize)) 
+			if (checksum.checkChecksum (buffer, recvSize)) 
 			{
 				sendAck (true);
+				Console.WriteLine ("sending ack");
 			} 
 			else
 				Console.WriteLine ("Error");

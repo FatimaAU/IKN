@@ -1,7 +1,7 @@
 using System;
 using System.IO.Ports;
 using System.Text;
-
+using Library;
 /// <summary>
 /// Link.
 /// </summary>
@@ -69,23 +69,48 @@ namespace Linklaget
 		{
 			StringBuilder data = new StringBuilder();
 
+			// Delimiter is appended
 			data.Append ((char)DELIMITER);
 
-			for(int i = 0; i < size; i++)
+			// First 4 is appended by char
+			for (int i = 0; i < 2; i++)
+				data.Append ((char)buf [i]);
+
+			// Real value is appended instead of char
+			for (int i = 2; i < 4; i++)
+				data.Append(buf[i]);
+
+			// Iterate through the rest of the data and append
+			for(int i = 4; i < size; i++)
 			{
+				// Check if A or B - replace with BC/BD, else append
 				if (buf [i] == 'A')
 					data.Append ("BC");
 				else if (buf [i] == 'B')
 					data.Append ("BD");
 				else
-					data.Append((char)buf[i]);
+				{
+					data.Append ((char)buf [i]);
+				}
 			}
+
+
+//			for (int i = 0; i < 2; i++)
+//				data.Append (buf [i]);
+//
+//			for(int i = 2; i < size; i++)
+//			{
+//				if (buf [i] == 'A')
+//					data.Append ("BC");
+//				else if (buf [i] == 'B')
+//					data.Append ("BD");
+//				else
+//					data.Append(buf[i]);
+//			}
 
 			data.Append ((char)DELIMITER);
 
-			string dataToSend = data.ToString ();
-
-			serialPort.Write (dataToSend);
+			serialPort.Write (data.ToString());
 		}
 
 		/// <summary>
@@ -98,38 +123,49 @@ namespace Linklaget
 		{
 			int size = serialPort.Read (buffer, 0, buffer.Length);
 
+			int bufIndex = 0;
 			// Make sure first index is DELIMITER
 			if (buffer [0] == DELIMITER) 
 			{
+
 				// Loop through from next index
-				for (int i = 1; i < size; i++) 
-				{
-					// Index of buf (to client) is i-1 (starting from 1 instead of 0)
-					int bufIndex = i - 1;
+				for (int i = 1; i < size; i++) {
 
 					if (buffer [i] == 'B') 
 					{
-						// Must check on next index to nsert A or B
-						switch(buffer[i + 1])
+						// Must check on next index to insert A or B
+						switch (buffer [i + 1]) 
 						{
 						case (byte)'C':
-							buf [bufIndex] = (byte)'A';
-							++i;
+							buf [bufIndex++] = (byte)'A';
+							i++;
 							break;
 						case (byte)'D':
-							buf [bufIndex] = (byte)'B';	
-							++i;
+							buf [bufIndex++] = (byte)'B';	
+							i++;
 							break;
 						}
 					} 
+					else if (buffer[i] == '0')
+					{
+						buf [bufIndex++] = 0;
+					}
+
 					else if (buffer [i] == DELIMITER)
 						break;
-					else
-						buf [bufIndex] = buffer [i];
+					else 
+					{
+						buf [bufIndex++] = buffer [i];
+					}
 				}
-			}	    	
+			} 
+			else 
+			{
+				Console.WriteLine ("Did not receive correct delimiter. Exiting\n");
+				Environment.Exit (1);
+			}
 
-			return buf.Length;
+			return bufIndex;
 		}
 	}
 }

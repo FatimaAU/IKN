@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace Library
 {
@@ -40,6 +41,16 @@ namespace Library
 				return (new FileInfo(fileName)).Length;
 
 			return 0;
+		}
+
+		public static string ToString(byte[] inBytes)
+		{
+			return Encoding.ASCII.GetString (inBytes);
+		}
+
+		public static byte[] ToBytes(string inString)
+		{
+			return Encoding.ASCII.GetBytes (inString);
 		}
 	}
 }

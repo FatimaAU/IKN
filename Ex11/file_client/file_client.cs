@@ -61,7 +61,9 @@ namespace Application
 		public static void Main (string[] args)
 		{
 			Console.WriteLine ("Client");
-			new file_client(args);
+			while (true) {
+				new file_client (args);
+			}
 		}
 	}
 }
