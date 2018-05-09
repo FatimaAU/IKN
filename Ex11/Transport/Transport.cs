@@ -179,6 +179,7 @@ namespace Transportlaget
 			//Receives data with full header
 			recvSize = link.receive (ref buffer);
 
+			Console.WriteLine ("recvsize: " + recvSize);
 			//Do some checking on Seq and Type
 
 			//Create new array with only checksum and data
@@ -194,9 +195,6 @@ namespace Transportlaget
 
 			//Console.WriteLine (LIB.ToString (checksumAndData));
 
-			for (int i = 0; i < recvSize; i++)
-				Console.WriteLine ("in transport: " + buffer [i]);
-		
 			//Check data for corret checksum
 			if (checksum.checkChecksum (buffer, recvSize)) 
 			{

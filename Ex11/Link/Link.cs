@@ -2,6 +2,7 @@ using System;
 using System.IO.Ports;
 using System.Text;
 using Library;
+using System.Collections.Generic;
 /// <summary>
 /// Link.
 /// </summary>
@@ -46,7 +47,7 @@ namespace Linklaget
 			if(!serialPort.IsOpen)
 				serialPort.Open();
 
-			buffer = new byte[(BUFSIZE*2)];
+			buffer = new byte[(BUFSIZE*2) + 4];
 
 			// Uncomment the next line to use timeout
 			//serialPort.ReadTimeout = 500;
@@ -67,50 +68,35 @@ namespace Linklaget
 		/// </param>
 		public void send (byte[] buf, int size)
 		{
-			StringBuilder data = new StringBuilder();
+			// Store SLIP
+			List<byte> data = new List<byte>();
 
 			// Delimiter is appended
-			data.Append ((char)DELIMITER);
+			data.Add (DELIMITER);
 
-			// First 4 is appended by char
-			for (int i = 0; i < 2; i++)
-				data.Append ((char)buf [i]);
-
-			// Real value is appended instead of char
-			for (int i = 2; i < 4; i++)
-				data.Append(buf[i]);
-
-			// Iterate through the rest of the data and append
-			for(int i = 4; i < size; i++)
+			// Iterate through the data and append
+			for(int i = 0; i < size; i++)
 			{
 				// Check if A or B - replace with BC/BD, else append
-				if (buf [i] == 'A')
-					data.Append ("BC");
+				if (buf [i] == 'A') 
+				{
+					data.Add ((byte)'B');
+					data.Add ((byte)'C');
+				}
 				else if (buf [i] == 'B')
-					data.Append ("BD");
+				{
+					data.Add ((byte)'B');
+					data.Add((byte)'D');
+				}
 				else
 				{
-					data.Append ((char)buf [i]);
+					data.Add (buf [i]);
 				}
 			}
 
+			data.Add (DELIMITER);
 
-//			for (int i = 0; i < 2; i++)
-//				data.Append (buf [i]);
-//
-//			for(int i = 2; i < size; i++)
-//			{
-//				if (buf [i] == 'A')
-//					data.Append ("BC");
-//				else if (buf [i] == 'B')
-//					data.Append ("BD");
-//				else
-//					data.Append(buf[i]);
-//			}
-
-			data.Append ((char)DELIMITER);
-
-			serialPort.Write (data.ToString());
+			serialPort.Write (data.ToArray(), 0, data.Count);
 		}
 
 		/// <summary>
@@ -122,14 +108,15 @@ namespace Linklaget
 		public int receive (ref byte[] buf)
 		{
 			int size = serialPort.Read (buffer, 0, buffer.Length);
-
+				
 			int bufIndex = 0;
 			// Make sure first index is DELIMITER
 			if (buffer [0] == DELIMITER) 
 			{
 
 				// Loop through from next index
-				for (int i = 1; i < size; i++) {
+				for (int i = 1; i < size; i++) 
+				{
 
 					if (buffer [i] == 'B') 
 					{
@@ -146,17 +133,10 @@ namespace Linklaget
 							break;
 						}
 					} 
-					else if (buffer[i] == '0')
-					{
-						buf [bufIndex++] = 0;
-					}
-
 					else if (buffer [i] == DELIMITER)
 						break;
 					else 
-					{
 						buf [bufIndex++] = buffer [i];
-					}
 				}
 			} 
 			else 

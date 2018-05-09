@@ -26,7 +26,7 @@ namespace Transportlaget
 		}
 
 		/// <summary>
-		/// Check the checksum. Returns true on correct and false on incorrect.
+		/// Check the checksum. Returns true on correct and false------- on incorrect.
 		/// </summary>
 		/// <param name='buf'>
 		/// Buffer of the data + header for checksum.
@@ -36,7 +36,7 @@ namespace Transportlaget
 		/// </param>
 		public bool checkChecksum(byte[] buf, int size)
 		{
-			byte[] buffer = new byte[size-4];
+			byte[] buffer = new byte[size-2];
 
 			Array.Copy(buf, (int)TransSize.CHKSUMSIZE, buffer, 0, buffer.Length);
 
