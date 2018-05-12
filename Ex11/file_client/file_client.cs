@@ -44,12 +44,16 @@ namespace Application
 		/// </param>
 		private void receiveFile (String fileName, Transport transport)
 		{
-			byte[] received = new byte[BUFSIZE];
-			transport.receive (ref received);
 
-			string receivedInString = Encoding.ASCII.GetString (received);
-
-			Console.WriteLine (receivedInString);
+			while(true)
+			{
+				byte[] received = new byte[BUFSIZE];
+				int size = transport.receive (ref received);
+				
+				string receivedInString = Encoding.ASCII.GetString (received);
+				
+				Console.WriteLine ("Received string " + receivedInString + " with size " + size + "\n");
+			}
 		}
 
 		/// <summary>
@@ -61,9 +65,7 @@ namespace Application
 		public static void Main (string[] args)
 		{
 			Console.WriteLine ("Client");
-			while (true) {
-				new file_client (args);
-			}
+			new file_client (args);
 		}
 	}
 }

@@ -20,13 +20,11 @@ namespace Transportlaget
         		--length;
     		}
 
-			Console.WriteLine ("sum: " + sum);
-
     		return (~((sum & 0xFFFF)+(sum >> 16)))&0xFFFF;
 		}
 
 		/// <summary>
-		/// Check the checksum. Returns true on correct and false------- on incorrect.
+		/// Check the checksum. Returns true on correct and false on incorrect.
 		/// </summary>
 		/// <param name='buf'>
 		/// Buffer of the data + header for checksum.
@@ -49,7 +47,7 @@ namespace Transportlaget
 		/// <param name='buf'>
 		/// Buffer of the data + space for checksum.
 		/// </param>
-		/// <param name='size'>
+		/// <param nam<e='size'>
 		/// Size of buffer + checksumsize.
 		/// </param>
 		public void calcChecksum (ref byte[] buf, int size)

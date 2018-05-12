@@ -44,6 +44,10 @@ namespace Application
 			byte[] toSend = Encoding.ASCII.GetBytes (inString);
 			//Console.WriteLine ("Sending to transport");
 			transport.send (toSend, toSend.Length);
+			transport.send (toSend, toSend.Length);
+			transport.send (toSend, toSend.Length);
+			transport.send (toSend, toSend.Length);
+			transport.send (toSend, toSend.Length);
 			// TO DO Your own code
 		}
 
