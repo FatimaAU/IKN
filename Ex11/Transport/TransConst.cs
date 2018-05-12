@@ -1,6 +1,4 @@
-using System;
-
-namespace Transportlaget
+namespace TransportLayer
 {
 	public enum TransSize
 	{

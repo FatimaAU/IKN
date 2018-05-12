@@ -1,9 +1,8 @@
 using System;
-using System.IO;
 using System.Text;
-using Transportlaget;
-using Library;
-namespace Application
+using TransportLayer;
+
+namespace server
 {
 	class file_server
 	{
@@ -43,11 +42,11 @@ namespace Application
 			string inString = "AXBY";
 			byte[] toSend = Encoding.ASCII.GetBytes (inString);
 			//Console.WriteLine ("Sending to transport");
-			transport.send (toSend, toSend.Length);
-			transport.send (toSend, toSend.Length);
-			transport.send (toSend, toSend.Length);
-			transport.send (toSend, toSend.Length);
-			transport.send (toSend, toSend.Length);
+			transport.Send (toSend, toSend.Length);
+			transport.Send (toSend, toSend.Length);
+			transport.Send (toSend, toSend.Length);
+			transport.Send (toSend, toSend.Length);
+			transport.Send (toSend, toSend.Length);
 			// TO DO Your own code
 		}
 
@@ -59,10 +58,7 @@ namespace Application
 		/// </param>
 		public static void Main (string[] args)
 		{
-			
-			//Console.WriteLine ("Hans");
 			new file_server();
-
 		}
 	}
 }

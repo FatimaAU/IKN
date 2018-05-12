@@ -1,13 +1,9 @@
 using System;
 
-namespace Transportlaget
+namespace TransportLayer
 {
 	public class Checksum
 	{
-		public Checksum ()
-		{
-		}
-
 		private long checksum (byte[] buf)
 		{
     		int i = 0, length = buf.Length;
@@ -32,7 +28,7 @@ namespace Transportlaget
 		/// <param name='size'>
 		/// Size of buffer + header.
 		/// </param>
-		public bool checkChecksum(byte[] buf, int size)
+		public bool CheckChecksum(byte[] buf, int size)
 		{
 			byte[] buffer = new byte[size-2];
 
@@ -41,16 +37,16 @@ namespace Transportlaget
 			return( checksum(buffer) == (long)(buf[(int)TransCHKSUM.CHKSUMHIGH] << 8 | buf[(int)TransCHKSUM.CHKSUMLOW]));
 		}
 
-		/// <summary>
-		/// Calculates the checksum.
-		/// </summary>
-		/// <param name='buf'>
-		/// Buffer of the data + space for checksum.
-		/// </param>
-		/// <param nam<e='size'>
-		/// Size of buffer + checksumsize.
-		/// </param>
-		public void calcChecksum (ref byte[] buf, int size)
+        /// <summary>
+        /// Calculates the checksum.
+        /// </summary>
+        /// <param name='buf'>
+        /// Buffer of the data + space for checksum.
+        /// </param>
+        /// <param name="size">
+        /// Size of buffer + checksumsize.
+        /// </param>
+        public void CalcChecksum (ref byte[] buf, int size)
 		{
 			byte[] buffer = new byte[size-2];
 			long sum = 0;

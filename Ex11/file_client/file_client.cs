@@ -1,10 +1,8 @@
 using System;
-using System.IO;
 using System.Text;
-using Transportlaget;
-using Library;
+using TransportLayer;
 
-namespace Application
+namespace client
 {
 	class file_client
 	{
@@ -13,7 +11,7 @@ namespace Application
 		/// </summary>
 		private const int BUFSIZE = 1000;
 		private const string APP = "FILE_CLIENT";
-		private Transport transport = new Transport(BUFSIZE, APP);
+		private Transport _transport = new Transport(BUFSIZE, APP);
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="file_client"/> class.
@@ -27,9 +25,9 @@ namespace Application
 		/// <param name='args'>
 		/// Filnavn med evtuelle sti.
 		/// </param>
-	    private file_client(String[] args)
+	    private file_client(string[] args)
 	    {
-			receiveFile ("dd", transport);
+			receiveFile ("dd", _transport);
 	    	// TO DO Your own code
 	    }
 
@@ -42,13 +40,13 @@ namespace Application
 		/// <param name='transport'>
 		/// Transportlaget
 		/// </param>
-		private void receiveFile (String fileName, Transport transport)
+		private void receiveFile (string fileName, Transport transport)
 		{
 
 			while(true)
 			{
 				byte[] received = new byte[BUFSIZE];
-				int size = transport.receive (ref received);
+				int size = transport.Receive (ref received);
 				
 				string receivedInString = Encoding.ASCII.GetString (received);
 				

@@ -1,12 +1,8 @@
 using System;
-using System.IO.Ports;
-using System.Text;
-using Library;
 using System.Collections.Generic;
-/// <summary>
-/// Link.
-/// </summary>
-namespace Linklaget
+using System.IO.Ports;
+
+namespace LinkLayer
 {
 	/// <summary>
 	/// Link.
@@ -20,11 +16,11 @@ namespace Linklaget
 		/// <summary>
 		/// The buffer for link.
 		/// </summary>
-		private byte[] buffer;
+		private readonly byte[] _buffer;
 		/// <summary>
 		/// The serial port.
 		/// </summary>
-		SerialPort serialPort;
+		private readonly SerialPort _serialPort;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="link"/> class.
@@ -35,24 +31,24 @@ namespace Linklaget
 			#if DEBUG
 				if(APP.Equals("FILE_SERVER"))
 				{
-					serialPort = new SerialPort("/dev/tnt1",115200,Parity.None,8,StopBits.One);
+					_serialPort = new SerialPort("/dev/tnt1",115200,Parity.None,8,StopBits.One);
 				}
 				else
 				{
-					serialPort = new SerialPort("/dev/tnt0",115200,Parity.None,8,StopBits.One);
+					_serialPort = new SerialPort("/dev/tnt0",115200,Parity.None,8,StopBits.One);
 				}
 			#else
 				serialPort = new SerialPort("/dev/ttyS1",115200,Parity.None,8,StopBits.One);
 			#endif
-			if(!serialPort.IsOpen)
-				serialPort.Open();
+			if(!_serialPort.IsOpen)
+				_serialPort.Open();
 
-			buffer = new byte[(BUFSIZE*2) + 4];
+			_buffer = new byte[(BUFSIZE*2) + 4];
 
 			// Uncomment the next line to use timeout
-			serialPort.ReadTimeout = 1500;
-			serialPort.DiscardInBuffer ();
-			serialPort.DiscardOutBuffer ();
+			_serialPort.ReadTimeout = 1500;
+			_serialPort.DiscardInBuffer();
+			_serialPort.DiscardOutBuffer();
 		}
 
 		/// <summary>
@@ -64,15 +60,14 @@ namespace Linklaget
 		/// <param name='size'>
 		/// Size.
 		/// </param>
-		public void send (byte[] buf, int size)
+		public void Send (byte[] buf, int size)
 		{
 			// Store SLIP
-			List<byte> data = new List<byte>();
+		    var data = new List<byte> {DELIMITER};
 
-			// Delimiter is appended
-			data.Add (DELIMITER);
+		    // Delimiter is appended
 
-			// Iterate through the data and append
+		    // Iterate through the data and append
 			for(int i = 0; i < size; i++)
 			{
 				// Check if A or B - replace with BC/BD, else append
@@ -94,7 +89,7 @@ namespace Linklaget
 
 			data.Add (DELIMITER);
 
-			serialPort.Write (data.ToArray(), 0, data.Count);
+			_serialPort.Write (data.ToArray(), 0, data.Count);
 		}
 
 		/// <summary>
@@ -103,23 +98,23 @@ namespace Linklaget
 		/// <param name='buf'>
 		/// Buffer.
 		/// </param>
-		public int receive (ref byte[] buf)
+		public int Receive (ref byte[] buf)
 		{
-			int size = serialPort.Read (buffer, 0, buffer.Length);
+			int size = _serialPort.Read(_buffer, 0, _buffer.Length);
 				
 			int bufIndex = 0;
 			// Make sure first index is DELIMITER
-			if (buffer [0] == DELIMITER) 
+			if (_buffer [0] == DELIMITER) 
 			{
 
 				// Loop through from next index
 				for (int i = 1; i < size; i++) 
 				{
 
-					if (buffer [i] == 'B') 
+					if (_buffer [i] == 'B') 
 					{
 						// Must check on next index to insert A or B
-						switch (buffer [i + 1]) 
+						switch (_buffer [i + 1]) 
 						{
 						case (byte)'C':
 							buf [bufIndex++] = (byte)'A';
@@ -131,10 +126,10 @@ namespace Linklaget
 							break;
 						}
 					} 
-					else if (buffer [i] == DELIMITER)
+					else if (_buffer [i] == DELIMITER)
 						break;
 					else 
-						buf [bufIndex++] = buffer [i];
+						buf [bufIndex++] = _buffer [i];
 				}
 			} 
 			else 
