@@ -192,7 +192,12 @@ namespace TransportLayer
 				Console.WriteLine ("\tErrorcount: " + _errorCount + "\n");
 
 			}while ((_errorCount < 5) || (_seqNo != _ackSeqNo));
-				
+
+			if (_errorCount >= 5) 
+			{
+				Console.WriteLine ("With errorcount " + _errorCount + ", I am out.");
+				return;
+			}
 			//old_seqNo = DEFAULT_SEQNO; //Vil ændre retning i applikationslageret åbenbart
 			_seqNo = (byte)((_seqNo + 1) % 2);
 			_errorCount = 0;

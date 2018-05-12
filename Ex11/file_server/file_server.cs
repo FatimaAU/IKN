@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using TransportLayer;
+using Library;
 
 namespace server
 {
@@ -25,7 +26,7 @@ namespace server
 
 		    int size = transport.Receive(ref filename);
 
-            Console.WriteLine($"Filename {filename}");
+			Console.WriteLine($"Filename {LIB.ToString(filename)}");
 		    //sendFile ("dd", 33, transport);
 		    // TO DO Your own code
 		}

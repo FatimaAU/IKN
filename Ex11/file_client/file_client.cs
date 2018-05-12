@@ -36,6 +36,8 @@ namespace client
 
             var filename = LIB.ToBytes(args[0]);
 
+			Console.WriteLine ("Requesting filename " + args [0] + "\n");
+
             _transport.Send(filename, filename.Length);
 	    	// TO DO Your own code
 	    }
@@ -72,7 +74,7 @@ namespace client
 		/// </param>
 		public static void Main (string[] args)
 		{
-			Console.WriteLine ("Client");
+			Console.WriteLine ("Client starts..\n");
 			new file_client (args);
 		}
 	}
