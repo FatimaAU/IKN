@@ -170,24 +170,24 @@ namespace TransportLayer
 
 					if (_ackSeqNo != _seqNo) 
 					{
-						Console.WriteLine ($"Error: Did not receive correctly (current seqNo: {_seqNo}, ackSeqNo: {_ackSeqNo})");
-						Console.WriteLine("Resending same package");
+						Console.WriteLine ("\tError: Did not receive correctly");
+						Console.WriteLine("\t\tResending same package");
 					} 
 					else if (_ackSeqNo == _seqNo)
 					{
-						Console.WriteLine ($"Received correctly (ack_seqNo: {_ackSeqNo}, current seqNo: {_seqNo})\n");
+						Console.WriteLine ("\tReceived correctly\n");
 						break;
 					}
 					else
-						Console.WriteLine("some other error");
+						Console.WriteLine("\tsome other error");
 				}
 				catch(TimeoutException) 
 				{
-					Console.WriteLine ("Timed out, resending");
+					Console.WriteLine ("\tTimed out, resending");
 				}
 
 				_errorCount++;
-				Console.WriteLine ("Errorcount: " + _errorCount + "\n");
+				Console.WriteLine ("\tErrorcount: " + _errorCount + "\n");
 
 			}while ((_errorCount < 5) || (_seqNo != _ackSeqNo));
 				
