@@ -111,16 +111,16 @@ namespace TransportLayer
 			ackBuf [(int)TransCHKSUM.TYPE] = (byte)(int)TransType.ACK;
 			checksum.CalcChecksum (ref ackBuf, (int)TransSize.ACKSIZE);
 
-			if(++_transmitCount == 1) // Simulate noise
+			if(_transmitCount == 1) // Simulate noise
 			{
 				ackBuf[1]++; // Important: Only spoil a checksum-field (ackBuf[0] or ackBuf[1])
-				Console.WriteLine($"Noise! ack #{_transmitCount} is spoiled in a transmitted ACK-package");
+				Console.WriteLine($"Noise! ack #{_transmitCount} checksum is spoiled in a transmitted ACK-package");
 			}
 
 			if (_transmitCount == 10)
 				_transmitCount = 0;
 
-			Console.WriteLine ($"Ack sends seqNo {ackBuf[(int)TransCHKSUM.SEQNO]}");
+			Console.WriteLine ($"Ack sends seqNo #{ackBuf[(int)TransCHKSUM.SEQNO]}");
 
 			link.Send(ackBuf, (int)TransSize.ACKSIZE);
 		}
@@ -150,7 +150,9 @@ namespace TransportLayer
 				checksum.CalcChecksum (ref _buffer, _buffer.Length);
 				//buffer [1]++;
 
-				if(++_transmitCount == 3) // Simulate noise
+				Console.WriteLine($"TRANSMIT #{++_transmitCount}");
+
+				if(_transmitCount == 3) // Simulate noise
 				{
 					_buffer[1]++; // Important: Only spoil a checksum-field (buffer[0] or buffer[1])
 					Console.WriteLine($"Noise! - pack #{_transmitCount} is spoiled");
@@ -213,6 +215,7 @@ namespace TransportLayer
 				_buffer[i] = 0;
 			}
 
+			// Will time out while waiting for server, so must catch 
 			while(_recvSize == 0)
 			{
 				try
@@ -221,19 +224,20 @@ namespace TransportLayer
 				} 
 				catch(Exception)
 				{
-					Console.WriteLine ("Transport receive timed out");
 				}
 			}
+
+			Console.WriteLine($"TRANSMIT #{++_transmitCount}");
+
 			if (checksum.CheckChecksum (_buffer, _recvSize)) 
 			{
 				Console.WriteLine ("Data pack OK.");
 
 				_seqNo = _buffer [(int)TransCHKSUM.SEQNO];
 
-				if (_seqNo != _oldSeqNo) 
-					Array.Copy (_buffer, (int)TransSize.ACKSIZE, buf, 0, _recvSize - (int)TransSize.ACKSIZE);
-				else
-					Console.WriteLine ("Received identical package. Ignore");
+				Array.Copy (_buffer, (int)TransSize.ACKSIZE, buf, 0, _recvSize - (int)TransSize.ACKSIZE);
+				if (_seqNo == _oldSeqNo) 
+					Console.WriteLine ("\tReceived identical package. Ignore");
 
 				_oldSeqNo = _seqNo;
 				sendAck (true);
