@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using Library;
 using TransportLayer;
 
 namespace client
@@ -27,7 +28,15 @@ namespace client
 		/// </param>
 	    private file_client(string[] args)
 	    {
-			receiveFile ("dd", _transport);
+	        if (args.Length != 1)
+	        {
+	            Console.WriteLine("Please supply a filename");
+	            Environment.Exit(0);
+            }
+
+            var filename = LIB.ToBytes(args[0]);
+
+            _transport.Send(filename, filename.Length);
 	    	// TO DO Your own code
 	    }
 
@@ -42,6 +51,7 @@ namespace client
 		/// </param>
 		private void receiveFile (string fileName, Transport transport)
 		{
+            Console.WriteLine($"Requesting filename {fileName}");
 
 			while(true)
 			{

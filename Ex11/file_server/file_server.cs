@@ -19,8 +19,15 @@ namespace server
 		/// </summary>
 		private file_server ()
 		{
-			sendFile ("dd", 33, transport);
-			// TO DO Your own code
+		    Console.WriteLine("Waiting for client to supply filename");
+
+            byte[] filename = new byte[BUFSIZE];
+
+		    int size = transport.Receive(ref filename);
+
+            Console.WriteLine($"Filename {filename}");
+		    //sendFile ("dd", 33, transport);
+		    // TO DO Your own code
 		}
 
 		/// <summary>
