@@ -13,23 +13,43 @@ namespace server
 		/// </summary>
 		private const int BUFSIZE = 1000;
 		private const string APP = "FILE_SERVER";
-		Transport transport = new Transport (BUFSIZE, APP);
+	    private readonly Transport _transport = new Transport (BUFSIZE, APP);
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="file_server"/> class.
 		/// </summary>
 		private file_server ()
 		{
-		    Console.WriteLine("Waiting for client to supply filename");
+		    Console.WriteLine("Waiting for client to supply filename \n");
 
-            byte[] filename = new byte[BUFSIZE];
+            var filename = new byte[BUFSIZE];
 
-		    int size = transport.Receive(ref filename);
+		    _transport.Receive(ref filename);
 
-			Console.WriteLine($"Filename {LIB.ToString(filename)}");
-		    //sendFile ("dd", 33, transport);
-		    // TO DO Your own code
-		}
+		    string filenameInString = LIB.ToString(filename);
+
+			Console.WriteLine($"\nFilename {filenameInString}");
+
+		    long fileSize = LIB.check_File_Exists(filenameInString);
+
+		    while (fileSize == 0)
+		    {
+		        string errorMsg = "File '" + filename + "' not found";
+		        Console.WriteLine(errorMsg);
+
+                var fileSizeToSend = LIB.ToBytes(fileSize.ToString());
+
+                _transport.Send(fileSizeToSend, fileSizeToSend.Length);
+
+		        _transport.Receive(ref filename);
+
+		        fileSize = LIB.check_File_Exists(LIB.ToString(filename));
+		    }
+
+            Console.WriteLine("File is found with size " + fileSize);
+
+            // TO DO Your own code
+        }
 
 		/// <summary>
 		/// Sends the file.
@@ -43,7 +63,7 @@ namespace server
 		/// <param name='tl'>
 		/// Tl.
 		/// </param>
-		private void sendFile(String fileName, long fileSize, Transport transport)
+		private void sendFile(string fileName, long fileSize, Transport transport)
 		{
 			Console.WriteLine ("Sending AXBY in file server\n");
 			//string inString = Console.ReadLine ();

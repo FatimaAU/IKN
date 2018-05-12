@@ -125,16 +125,21 @@ namespace TransportLayer
 			link.Send(ackBuf, (int)TransSize.ACKSIZE);
 		}
 
-	    /// <summary>
-	    /// Send the specified buffer and size.
-	    /// </summary>
-	    /// <param name="buf">
-	    /// Buffer.
-	    /// </param>
-	    /// <param name='size'>
-	    /// Size.
-	    /// </param>
-	    public void Send(byte[] buf, int size)
+	    public long GetFileSize(ref byte[] buf)
+	    {
+	        return long.Parse(Receive(ref buf).ToString());
+	    }
+
+        /// <summary>
+        /// Send the specified buffer and size.
+        /// </summary>
+        /// <param name="buf">
+        /// Buffer.
+        /// </param>
+        /// <param name='size'>
+        /// Size.
+        /// </param>
+        public void Send(byte[] buf, int size)
 		{
 			do
 			{
@@ -220,16 +225,23 @@ namespace TransportLayer
 				_buffer[i] = 0;
 			}
 
-			// Will time out while waiting for server, so must catch 
-			while(_recvSize == 0)
+            // Just to be able to reuse the buf 
+		    for (int i = 0; i < buf.Length; i++)
+		    {
+		        buf[i] = 0;
+		    }
+
+            // Will time out while waiting for server, so must catch 
+            while (_recvSize == 0)
 			{
 				try
 				{
 					_recvSize = link.Receive(ref _buffer);	//returns length of received byte array
-				} 
-				catch(Exception)
-				{
 				}
+			    catch (Exception)
+			    {
+			        // ignored
+			    }
 			}
 
 			Console.WriteLine($"TRANSMIT #{++_transmitCount}");

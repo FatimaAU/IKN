@@ -15,7 +15,7 @@ namespace Library
 		/// <param name='fileName'>
 		/// Filename with path.
 		/// </param>
-		public static String ExtractFileName(String fileName)
+		public static string ExtractFileName(string fileName)
     	{
     		return (fileName.LastIndexOf('/')==0 ? fileName : fileName.Substring(fileName.LastIndexOf('/')+1));
     	}
@@ -29,7 +29,7 @@ namespace Library
 		/// <param name='fileName'>
 		/// The filename.
 		/// </param>
-		public static long check_File_Exists (String fileName)
+		public static long check_File_Exists(string fileName)
 		{
 			if (File.Exists (fileName))
 				return (new FileInfo(fileName)).Length;
@@ -37,7 +37,13 @@ namespace Library
 			return 0;
 		}
 
-		public static string ToString(byte[] inBytes)
+	    public static long GetFileSizeTCP()
+	    {
+            return long.Parse()
+	    }
+
+
+        public static string ToString(byte[] inBytes)
 		{
 			return Encoding.ASCII.GetString (inBytes);
 		}

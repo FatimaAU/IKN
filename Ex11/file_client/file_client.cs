@@ -34,12 +34,27 @@ namespace client
 	            Environment.Exit(0);
             }
 
-            var filename = LIB.ToBytes(args[0]);
+	        string filename = args[0];
+
+            var filenameInBytes = LIB.ToBytes(args[0]);
 
 			Console.WriteLine ("Requesting filename " + args [0] + "\n");
 
-            _transport.Send(filename, filename.Length);
-	    	// TO DO Your own code
+            _transport.Send(filenameInBytes, filename.Length);
+
+            var fileSize = new byte[BUFSIZE];
+
+	        long size = _transport.GetFileSize(ref fileSize);
+
+	        while (size == 0)
+	        {
+                Console.WriteLine($"File {filename} not found. Input a valid file");
+	            filename = Console.ReadLine();
+
+	            Console.WriteLine($"Requesting filename '{filename}'");
+
+            }
+	        // TO DO Your own code
 	    }
 
 		/// <summary>
