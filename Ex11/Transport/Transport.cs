@@ -111,11 +111,11 @@ namespace TransportLayer
 			ackBuf [(int)TransCHKSUM.TYPE] = (byte)(int)TransType.ACK;
 			checksum.CalcChecksum (ref ackBuf, (int)TransSize.ACKSIZE);
 
-			if(_transmitCount == 1) // Simulate noise
-			{
-				ackBuf[1]++; // Important: Only spoil a checksum-field (ackBuf[0] or ackBuf[1])
-				Console.WriteLine($"Noise! ack #{_transmitCount} checksum is spoiled in a transmitted ACK-package");
-			}
+//			if(_transmitCount == 1) // Simulate noise
+//			{
+//				ackBuf[1]++; // Important: Only spoil a checksum-field (ackBuf[0] or ackBuf[1])
+//				Console.WriteLine($"Noise! ack #{_transmitCount} checksum is spoiled in a transmitted ACK-package");
+//			}
 
 			if (_transmitCount == 10)
 				_transmitCount = 0;
@@ -141,19 +141,23 @@ namespace TransportLayer
         /// </param>
         public void Send(byte[] buf, int size)
 		{
+			// Reset buffer
+			for (int i = 0; i < _buffer.Length; i++) 
+			{
+				_buffer [i] = 0;
+			}
+
 			do
 			{
-				_ackSeqNo = _seqNo;
 				//Seq
 				_buffer [(int)TransCHKSUM.SEQNO] = _seqNo;
 				//Type
 				_buffer [(int)TransCHKSUM.TYPE] = (int)TransType.DATA;
 
-				Array.Copy(buf, 0, _buffer, 4, buf.Length);
+				Array.Copy(buf, 0, _buffer, 4, size);
 
 				//Tilføjer de to første "bytes" på buf
 				checksum.CalcChecksum (ref _buffer, _buffer.Length);
-				//buffer [1]++;
 
 				Console.WriteLine($"TRANSMIT #{++_transmitCount}");
 
@@ -162,9 +166,11 @@ namespace TransportLayer
 					_buffer[1]++; // Important: Only spoil a checksum-field (buffer[0] or buffer[1])
 					Console.WriteLine($"Noise! - pack #{_transmitCount} is spoiled");
 				}
-				if (_transmitCount == 10)
+
+				if (_transmitCount == 5)
 					_transmitCount = 0;
 
+				_ackSeqNo = _seqNo;
 				try
 				{
 					Console.WriteLine($"Sending pack with seqNo #{_seqNo}");
@@ -180,13 +186,11 @@ namespace TransportLayer
 						Console.WriteLine ("\tError: Did not receive correctly");
 						Console.WriteLine("\t\tResending same package");
 					} 
-					else if (_ackSeqNo == _seqNo)
+					else
 					{
 						Console.WriteLine ("\tReceived correctly\n");
 						break;
 					}
-					else
-						Console.WriteLine("\tsome other error");
 				}
 				catch(TimeoutException) 
 				{
@@ -196,17 +200,25 @@ namespace TransportLayer
 				_errorCount++;
 				Console.WriteLine ("\tErrorcount: " + _errorCount + "\n");
 
-			}while ((_errorCount < 5) || (_seqNo != _ackSeqNo));
+			}while ((_errorCount < 5));
 
 			if (_errorCount >= 5) 
 			{
 				Console.WriteLine ("With errorcount " + _errorCount + ", I am out.");
-				return;
+				Environment.Exit (1);
 			}
 			//old_seqNo = DEFAULT_SEQNO; //Vil ændre retning i applikationslageret åbenbart
+
+			for (int i = 0; i < _buffer.Length; i++) 
+			{
+				_buffer [i] = 0;
+			}
+
 			_seqNo = (byte)((_seqNo + 1) % 2);
+
 			_errorCount = 0;
 			_ackSeqNo = DEFAULT_SEQNO;
+			Console.WriteLine ("Done sending\n");
 		}
 
         /// <summary>
@@ -217,53 +229,55 @@ namespace TransportLayer
         /// </param>
         public int Receive (ref byte[] buf)
 		{
-			_recvSize = 0;
+			bool check = false;
 
 			// Reset buffer
-			for(int i = 0; i < _buffer.Length; i++)
-			{
-				_buffer[i] = 0;
+			for (int i = 0; i < _buffer.Length; i++) {
+				_buffer [i] = 0;
 			}
 
-            // Just to be able to reuse the buf 
-		    for (int i = 0; i < buf.Length; i++)
-		    {
-		        buf[i] = 0;
-		    }
+			// Just to be able to reuse the buf 
+//			for (int i = 0; i < buf.Length; i++) {
+//				buf [i] = 0;
+//		
 
-            // Will time out while waiting for server, so must catch 
-            while (_recvSize == 0)
+			while (true) 
 			{
-				try
+				_recvSize = 0;
+				// Will time out while waiting, so must catch 
+				while (_recvSize == 0) 
 				{
-					_recvSize = link.Receive(ref _buffer);	//returns length of received byte array
+					try 
+					{
+						_recvSize = link.Receive (ref _buffer);	//returns length of received byte array
+					} 
+					catch (Exception) 
+					{
+
+					}
 				}
-			    catch (Exception)
-			    {
-			        // ignored
-			    }
+
+				check = true;
+				Console.WriteLine ($"TRANSMIT #{++_transmitCount}");
+
+				if (checksum.CheckChecksum (_buffer, _recvSize)) 
+				{
+					Console.WriteLine ("Data pack OK.");
+
+					_seqNo = _buffer [(int)TransCHKSUM.SEQNO];
+
+					Array.Copy (_buffer, (int)TransSize.ACKSIZE, buf, 0, _recvSize - (int)TransSize.ACKSIZE);
+					if (_seqNo == _oldSeqNo)
+						Console.WriteLine ("\tReceived identical package. Ignore");
+
+					_oldSeqNo = _seqNo;
+					sendAck (true);
+					return _recvSize - 4;
+				}
+
+				Console.WriteLine ("Error in data pack. Sending NACK.");
+				sendAck (false);
 			}
-
-			Console.WriteLine($"TRANSMIT #{++_transmitCount}");
-
-			if (checksum.CheckChecksum (_buffer, _recvSize)) 
-			{
-				Console.WriteLine ("Data pack OK.");
-
-				_seqNo = _buffer [(int)TransCHKSUM.SEQNO];
-
-				Array.Copy (_buffer, (int)TransSize.ACKSIZE, buf, 0, _recvSize - (int)TransSize.ACKSIZE);
-				if (_seqNo == _oldSeqNo) 
-					Console.WriteLine ("\tReceived identical package. Ignore");
-
-				_oldSeqNo = _seqNo;
-				sendAck (true);
-				return _recvSize - 4;
-			}
-
-		    Console.WriteLine ("Error in data pack. Sending NACK.");
-		    sendAck (false);
-		    return 0;
 		}
 	}
 }

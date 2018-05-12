@@ -37,12 +37,6 @@ namespace Library
 			return 0;
 		}
 
-	    public static long GetFileSizeTCP()
-	    {
-            return long.Parse()
-	    }
-
-
         public static string ToString(byte[] inBytes)
 		{
 			return Encoding.ASCII.GetString (inBytes);

@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using TransportLayer;
 using Library;
+using System.IO;
 
 namespace server
 {
@@ -24,30 +25,42 @@ namespace server
 
             var filename = new byte[BUFSIZE];
 
-		    _transport.Receive(ref filename);
+			// Get filename with size of byte 
+		    int size = _transport.Receive(ref filename);
 
-		    string filenameInString = LIB.ToString(filename);
+			// Extract file name from the path
+			string filenameStr = LIB.ExtractFileName (LIB.ToString (filename).Substring (0, size));
 
-			Console.WriteLine($"\nFilename {filenameInString}");
+			Console.WriteLine($"\nFilename {LIB.ToString(filename)}");
 
-		    long fileSize = LIB.check_File_Exists(filenameInString);
+			// Check file exist
+			long fileSize = LIB.check_File_Exists(LIB.ToString(filename).Substring(0, size));
 
+			Console.WriteLine (LIB.ToString (filename).Substring (0, size));
+
+			// If it does not exist, ask for another filename
 		    while (fileSize == 0)
 		    {
-		        string errorMsg = "File '" + filename + "' not found";
+				string errorMsg = "File '" + LIB.ToString(filename) + "' not found \n";
+
 		        Console.WriteLine(errorMsg);
 
-                var fileSizeToSend = LIB.ToBytes(fileSize.ToString());
+				// Send filesize back
+				_transport.Send(LIB.ToBytes(fileSize.ToString()), LIB.ToBytes(fileSize.ToString()).Length);
 
-                _transport.Send(fileSizeToSend, fileSizeToSend.Length);
+		        size =_transport.Receive(ref filename);
 
-		        _transport.Receive(ref filename);
+				Console.WriteLine (LIB.ToString (filename));
 
-		        fileSize = LIB.check_File_Exists(LIB.ToString(filename));
+				// Check if file exist - must do with substring to get exact path
+				fileSize = LIB.check_File_Exists(LIB.ToString(filename).Substring(0, size));
 		    }
 
             Console.WriteLine("File is found with size " + fileSize);
 
+			_transport.Send(LIB.ToBytes(fileSize.ToString()), LIB.ToBytes(fileSize.ToString()).Length);
+
+			sendFile (LIB.ToString (filename).Substring(0, size), fileSize, _transport);
             // TO DO Your own code
         }
 
@@ -65,17 +78,24 @@ namespace server
 		/// </param>
 		private void sendFile(string fileName, long fileSize, Transport transport)
 		{
-			Console.WriteLine ("Sending AXBY in file server\n");
-			//string inString = Console.ReadLine ();
-			string inString = "AXBY";
-			byte[] toSend = Encoding.ASCII.GetBytes (inString);
-			//Console.WriteLine ("Sending to transport");
-			transport.Send (toSend, toSend.Length);
-			transport.Send (toSend, toSend.Length);
-			transport.Send (toSend, toSend.Length);
-			transport.Send (toSend, toSend.Length);
-			transport.Send (toSend, toSend.Length);
-			// TO DO Your own code
+			Console.WriteLine ("Sending file ..");
+
+			FileStream fs = new FileStream (fileName, FileMode.Open, FileAccess.Read);
+			byte[] fileToSend = new byte[BUFSIZE]; //Changed to bufsize maks send6
+
+			int bytesToSend = 0;
+
+			while ((bytesToSend = fs.Read (fileToSend, 0, fileToSend.Length)) > 0) //I exist to keep sending bytes until I only got 0 bytes to send left 
+			{
+				Console.WriteLine ("bytestosend " + bytesToSend);
+				_transport.Send (fileToSend, bytesToSend);
+				Console.WriteLine ("filetosend length "+ fileToSend.Length);
+
+				Console.WriteLine ($"Sent {bytesToSend} bytes");
+
+			}
+
+			Console.WriteLine ("File sent");
 		}
 
 		/// <summary>
@@ -86,7 +106,9 @@ namespace server
 		/// </param>
 		public static void Main (string[] args)
 		{
-			new file_server();
+			while(true)
+				new file_server();
+				
 		}
 	}
 }

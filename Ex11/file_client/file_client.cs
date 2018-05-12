@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.IO;
 using Library;
 using TransportLayer;
 
@@ -40,23 +41,52 @@ namespace client
 
 			Console.WriteLine ("Requesting filename " + args [0] + "\n");
 
-            _transport.Send(filenameInBytes, filename.Length);
+			_transport.Send(filenameInBytes, filenameInBytes.Length);
 
-            var fileSize = new byte[BUFSIZE];
+			// Have to be a "long" instead?
+			byte[] fileSize = new byte[BUFSIZE];
 
-	        long size = _transport.GetFileSize(ref fileSize);
+			int size = _transport.Receive(ref fileSize);
 
-	        while (size == 0)
+			while ((LIB.ToString(fileSize).Substring(0, size) == "0"))
 	        {
                 Console.WriteLine($"File {filename} not found. Input a valid file");
 	            filename = Console.ReadLine();
 
 	            Console.WriteLine($"Requesting filename '{filename}'");
 
-            }
-	        // TO DO Your own code
-	    }
+				_transport.Send (LIB.ToBytes (filename), LIB.ToBytes (filename).Length);
 
+				_transport.Receive(ref fileSize);
+            }
+
+			Console.WriteLine ("File size: " + LIB.ToString(fileSize));
+
+			string dataDir = "/root/Desktop/Ex11_TransmittedFiles/";
+			Directory.CreateDirectory (dataDir);
+
+			FileStream file = new FileStream (dataDir + filename, FileMode.Create, FileAccess.Write);
+			byte[] data = new byte[BUFSIZE]; //Vi modtager kun 1k bytes af gangen
+
+			int totalBytes = 0;
+			int bytesRead;
+
+			Console.WriteLine ("Reading file " + filename + " ... ");
+
+			//while ((bytesRead = io.Read(data, 0, data.Length)) > 0) //Nu bliver den ved indtil længden af det den modtager er 0
+			while(long.Parse(LIB.ToString(fileSize)) > totalBytes)
+			{
+				bytesRead = _transport.Receive (ref data);
+				file.Write (data, 0, bytesRead);
+				totalBytes += bytesRead;
+
+				Console.WriteLine ("Read bytes: " + bytesRead + "\t Total bytes read:" + totalBytes);
+
+			}
+
+			Console.WriteLine ("File received");
+			file.Close ();
+	    }
 		/// <summary>
 		/// Receives the file.
 		/// </summary>
@@ -68,17 +98,7 @@ namespace client
 		/// </param>
 		private void receiveFile (string fileName, Transport transport)
 		{
-            Console.WriteLine($"Requesting filename {fileName}");
-
-			while(true)
-			{
-				byte[] received = new byte[BUFSIZE];
-				int size = transport.Receive (ref received);
-				
-				string receivedInString = Encoding.ASCII.GetString (received);
-				
-				Console.WriteLine ("Received string " + receivedInString + " with size " + size + "\n");
-			}
+            
 		}
 
 		/// <summary>
