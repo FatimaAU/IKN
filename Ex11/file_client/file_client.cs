@@ -46,7 +46,6 @@ namespace client
 			// Filesize in bytes
 			byte[] fileSize = new byte[BUFSIZE];
 
-			Console.WriteLine ("receive stuff");
 			// Receive file s
 			int size = _transport.Receive(ref fileSize);
 
@@ -64,19 +63,32 @@ namespace client
 
 			Console.WriteLine ("File size: " + LIB.ToString(fileSize));
 
+			receiveFile (filename, long.Parse (LIB.ToString (fileSize)), _transport);
+	    }
+		/// <summary>
+		/// Receives the file.
+		/// </summary>
+		/// <param name='fileName'>
+		/// File name.
+		/// </param>
+		/// <param name='transport'>
+		/// Transportlaget
+		/// </param>
+		private void receiveFile (string fileName, long fileSize, Transport transport)
+		{
 			string dataDir = "/root/Desktop/Ex11_TransmittedFiles/";
 			Directory.CreateDirectory (dataDir);
 
-			FileStream file = new FileStream (dataDir + filename, FileMode.Create, FileAccess.Write);
+			FileStream file = new FileStream (dataDir + fileName, FileMode.Create, FileAccess.Write);
 			byte[] data = new byte[BUFSIZE]; //Vi modtager kun 1k bytes af gangen
 
 			int totalBytes = 0;
 			int bytesRead;
 
-			Console.WriteLine ("Reading file " + filename + " ... ");
+			Console.WriteLine ("Reading file " + fileName + " ... ");
 
 			//while ((bytesRead = io.Read(data, 0, data.Length)) > 0) //Nu bliver den ved indtil længden af det den modtager er 0
-			while(long.Parse(LIB.ToString(fileSize)) > totalBytes)
+			while(fileSize > totalBytes)
 			{
 				bytesRead = _transport.Receive (ref data);
 				file.Write (data, 0, bytesRead);
@@ -88,19 +100,6 @@ namespace client
 
 			Console.WriteLine ("File received");
 			file.Close ();
-	    }
-		/// <summary>
-		/// Receives the file.
-		/// </summary>
-		/// <param name='fileName'>
-		/// File name.
-		/// </param>
-		/// <param name='transport'>
-		/// Transportlaget
-		/// </param>
-		private void receiveFile (string fileName, Transport transport)
-		{
-            
 		}
 
 		/// <summary>

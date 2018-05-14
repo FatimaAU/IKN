@@ -211,7 +211,6 @@ namespace TransportLayer
 
 			_errorCount = 0;
 			_ackSeqNo = DEFAULT_SEQNO;
-			Console.WriteLine ("Done sending\n");
 		}
 
         /// <summary>

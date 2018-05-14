@@ -87,10 +87,7 @@ namespace server
 
 			while ((bytesToSend = fs.Read (fileToSend, 0, fileToSend.Length)) > 0) //I exist to keep sending bytes until I only got 0 bytes to send left 
 			{
-				Console.WriteLine ("bytestosend " + bytesToSend);
 				_transport.Send (fileToSend, bytesToSend);
-				Console.WriteLine ("filetosend length "+ fileToSend.Length);
-
 				Console.WriteLine ($"Sent {bytesToSend} bytes");
 
 			}

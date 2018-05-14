@@ -38,7 +38,7 @@ namespace LinkLayer
 					_serialPort = new SerialPort("/dev/tnt0",115200,Parity.None,8,StopBits.One);
 				}
 			#else
-				serialPort = new SerialPort("/dev/ttyS1",115200,Parity.None,8,StopBits.One);
+				_serialPort = new SerialPort("/dev/ttyS1",115200,Parity.None,8,StopBits.One);
 			#endif
 			if(!_serialPort.IsOpen)
 				_serialPort.Open();
