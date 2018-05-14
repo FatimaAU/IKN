@@ -35,17 +35,19 @@ namespace client
 	            Environment.Exit(0);
             }
 
+			// Get filename
 	        string filename = args[0];
-
-            var filenameInBytes = LIB.ToBytes(args[0]);
 
 			Console.WriteLine ("Requesting filename " + args [0] + "\n");
 
-			_transport.Send(filenameInBytes, filenameInBytes.Length);
+			// Send file name 
+			_transport.Send(LIB.ToBytes(filename), LIB.ToBytes(filename).Length);
 
-			// Have to be a "long" instead?
+			// Filesize in bytes
 			byte[] fileSize = new byte[BUFSIZE];
 
+			Console.WriteLine ("receive stuff");
+			// Receive file s
 			int size = _transport.Receive(ref fileSize);
 
 			while ((LIB.ToString(fileSize).Substring(0, size) == "0"))

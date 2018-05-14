@@ -42,6 +42,11 @@ namespace Library
 			return Encoding.ASCII.GetString (inBytes);
 		}
 
+		public static string ToString(byte[] inBytes, int startIndex, int count)
+		{
+			return Encoding.ASCII.GetString (inBytes, startIndex, count);
+		}
+
 		public static byte[] ToBytes(string inString)
 		{
 			return Encoding.ASCII.GetBytes (inString);

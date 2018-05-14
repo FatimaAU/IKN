@@ -86,15 +86,13 @@ namespace TransportLayer
 					|| _buffer [(int)TransCHKSUM.TYPE] != (int)TransType.ACK)
 				{
 					Console.WriteLine("Error in ack checksum or type!");
-					_ackSeqNo = (byte) ((_ackSeqNo + 1) % 2); // Increment current ack_seq
+					_ackSeqNo = (byte) ((_buffer[(int)TransCHKSUM.SEQNO] + 1) % 2); // Increment current ack_seq
 				}
 				else
 				{
 					_ackSeqNo = (byte) _buffer[(int)TransCHKSUM.SEQNO]; // No incrementing since already incremented
 				}
 			}
- 			
-			//return ack_seqNo;
 		}
 
 		/// <summary>
@@ -124,11 +122,6 @@ namespace TransportLayer
 
 			link.Send(ackBuf, (int)TransSize.ACKSIZE);
 		}
-
-	    public long GetFileSize(ref byte[] buf)
-	    {
-	        return long.Parse(Receive(ref buf).ToString());
-	    }
 
         /// <summary>
         /// Send the specified buffer and size.
@@ -179,6 +172,7 @@ namespace TransportLayer
 
                     receiveAck ();
 
+
 				    Console.WriteLine($"Receiving ack with seqNo #{_ackSeqNo}");
 
 					if (_ackSeqNo != _seqNo) 
@@ -207,7 +201,6 @@ namespace TransportLayer
 				Console.WriteLine ("With errorcount " + _errorCount + ", I am out.");
 				Environment.Exit (1);
 			}
-			//old_seqNo = DEFAULT_SEQNO; //Vil ændre retning i applikationslageret åbenbart
 
 			for (int i = 0; i < _buffer.Length; i++) 
 			{
@@ -229,17 +222,10 @@ namespace TransportLayer
         /// </param>
         public int Receive (ref byte[] buf)
 		{
-			bool check = false;
-
 			// Reset buffer
 			for (int i = 0; i < _buffer.Length; i++) {
 				_buffer [i] = 0;
 			}
-
-			// Just to be able to reuse the buf 
-//			for (int i = 0; i < buf.Length; i++) {
-//				buf [i] = 0;
-//		
 
 			while (true) 
 			{
@@ -250,14 +236,13 @@ namespace TransportLayer
 					try 
 					{
 						_recvSize = link.Receive (ref _buffer);	//returns length of received byte array
+
 					} 
 					catch (Exception) 
 					{
-
 					}
 				}
 
-				check = true;
 				Console.WriteLine ($"TRANSMIT #{++_transmitCount}");
 
 				if (checksum.CheckChecksum (_buffer, _recvSize)) 
