@@ -64,7 +64,6 @@ namespace LinkLayer
 		{
 			// Store SLIP
 		    var data = new List<byte> {DELIMITER};
-
 		    // Delimiter is appended
 
 		    // Iterate through the data and append
@@ -134,8 +133,7 @@ namespace LinkLayer
 			} 
 			else 
 			{
-				Console.WriteLine ("Did not receive correct delimiter. Exiting\n");
-				Environment.Exit (1);
+				return -1;
 			}
 
 			return bufIndex;

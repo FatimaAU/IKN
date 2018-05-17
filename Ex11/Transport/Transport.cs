@@ -114,7 +114,7 @@ namespace TransportLayer
 //				ackBuf[1]++; // Important: Only spoil a checksum-field (ackBuf[0] or ackBuf[1])
 //				Console.WriteLine($"Noise! ack #{_transmitCount} checksum is spoiled in a transmitted ACK-package");
 //			}
-
+//
 			if (_transmitCount == 10)
 				_transmitCount = 0;
 
@@ -135,13 +135,14 @@ namespace TransportLayer
         public void Send(byte[] buf, int size)
 		{
 			// Reset buffer
-			for (int i = 0; i < _buffer.Length; i++) 
-			{
-				_buffer [i] = 0;
-			}
 
 			do
 			{
+				for (int i = 0; i < _buffer.Length; i++) 
+				{
+					_buffer [i] = 0;
+				}
+
 				//Seq
 				_buffer [(int)TransCHKSUM.SEQNO] = _seqNo;
 				//Type
@@ -152,13 +153,13 @@ namespace TransportLayer
 				//Tilføjer de to første "bytes" på buf
 				checksum.CalcChecksum (ref _buffer, _buffer.Length);
 
-				Console.WriteLine($"TRANSMIT #{++_transmitCount}");
-
-				if(_transmitCount == 3) // Simulate noise
-				{
-					_buffer[1]++; // Important: Only spoil a checksum-field (buffer[0] or buffer[1])
-					Console.WriteLine($"Noise! - pack #{_transmitCount} is spoiled");
-				}
+//				Console.WriteLine($"TRANSMIT #{++_transmitCount}");
+//
+//				if(_transmitCount == 3) // Simulate noise
+//				{
+//					_buffer[1]++; // Important: Only spoil a checksum-field (buffer[0] or buffer[1])
+//					Console.WriteLine($"Noise! - pack #{_transmitCount} is spoiled");
+//				}
 
 				if (_transmitCount == 5)
 					_transmitCount = 0;
@@ -230,12 +231,17 @@ namespace TransportLayer
 			{
 				_recvSize = 0;
 				// Will time out while waiting, so must catch 
-				while (_recvSize == 0) 
+				while (_recvSize == 0 || _recvSize == -1) 
 				{
 					try 
 					{
 						_recvSize = link.Receive (ref _buffer);	//returns length of received byte array
+						if (_recvSize == -1)
+						{
+							sendAck(false); 
+							System.Threading.Thread.Sleep(200);
 
+						}
 					} 
 					catch (Exception) 
 					{

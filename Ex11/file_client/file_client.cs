@@ -87,7 +87,6 @@ namespace client
 
 			Console.WriteLine ("Reading file " + fileName + " ... ");
 
-			//while ((bytesRead = io.Read(data, 0, data.Length)) > 0) //Nu bliver den ved indtil længden af det den modtager er 0
 			while(fileSize > totalBytes)
 			{
 				bytesRead = _transport.Receive (ref data);
@@ -110,6 +109,7 @@ namespace client
 		/// </param>
 		public static void Main (string[] args)
 		{
+			// Console.WriteLine("HANS"); // MUST NOT BE DELETED!!!!!
 			Console.WriteLine ("Client starts..\n");
 			new file_client (args);
 		}
