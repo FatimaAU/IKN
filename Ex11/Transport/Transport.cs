@@ -234,8 +234,6 @@ namespace TransportLayer
 						if (_recvSize == -1)
 						{
 							sendAck(false); 
-							System.Threading.Thread.Sleep(200);
-
 						}
 					} 
 					catch (Exception) 
