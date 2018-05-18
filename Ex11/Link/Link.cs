@@ -43,7 +43,7 @@ namespace LinkLayer
 			if(!_serialPort.IsOpen)
 				_serialPort.Open();
 
-			_buffer = new byte[(BUFSIZE*2) + 4];
+			_buffer = new byte[(BUFSIZE*2)];
 
 			// Uncomment the next line to use timeout
 			_serialPort.ReadTimeout = 500;
@@ -86,8 +86,10 @@ namespace LinkLayer
 				}
 			}
 
+			// Add last delimiter
 			data.Add (DELIMITER);
 
+			// Write to serial port with data
 			_serialPort.Write (data.ToArray(), 0, data.Count);
 		}
 
@@ -105,7 +107,6 @@ namespace LinkLayer
 			// Make sure first index is DELIMITER
 			if (_buffer [0] == DELIMITER) 
 			{
-
 				// Loop through from next index
 				for (int i = 1; i < size; i++) 
 				{

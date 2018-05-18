@@ -203,11 +203,6 @@ namespace TransportLayer
 				Environment.Exit (1);
 			}
 
-			for (int i = 0; i < _buffer.Length; i++) 
-			{
-				_buffer [i] = 0;
-			}
-
 			_seqNo = (byte)((_seqNo + 1) % 2);
 
 			_errorCount = 0;

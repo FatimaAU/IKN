@@ -2,13 +2,13 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Link/Link.cs">
     <Files>
-      <File FileName="Transport/Transport.cs" Line="235" Column="6" />
+      <File FileName="Transport/Transport.cs" Line="142" Column="6" />
       <File FileName="Transport/Checksum.cs" Line="1" Column="1" />
       <File FileName="Transport/TransConst.cs" Line="1" Column="1" />
-      <File FileName="file_client/file_client.cs" Line="86" Column="18" />
+      <File FileName="file_client/file_client.cs" Line="1" Column="1" />
       <File FileName="file_server/file_server.cs" Line="1" Column="1" />
       <File FileName="LIB/LIB.cs" Line="1" Column="1" />
-      <File FileName="Link/Link.cs" Line="67" Column="1" />
+      <File FileName="Link/Link.cs" Line="105" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
