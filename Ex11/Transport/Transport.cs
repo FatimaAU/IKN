@@ -72,9 +72,6 @@ namespace TransportLayer
 		/// <summary>
 		/// Receives the ack.
 		/// </summary>
-		/// <returns>
-		/// The ack.
-		/// </returns>
 		private void receiveAck()
 		{
 			_recvSize = link.Receive(ref _buffer);
@@ -105,7 +102,8 @@ namespace TransportLayer
 		{
 			byte[] ackBuf = new byte[(int)TransSize.ACKSIZE];
 			ackBuf [(int)TransCHKSUM.SEQNO] = 
-				(byte)(ackType ? (byte)_buffer [(int)TransCHKSUM.SEQNO] : (byte)(_buffer [(int)TransCHKSUM.SEQNO] + 1) % 2);
+				(byte)(ackType ? (byte)_buffer [(int)TransCHKSUM.SEQNO] 
+					: (byte)(_buffer [(int)TransCHKSUM.SEQNO] + 1) % 2);
 			ackBuf [(int)TransCHKSUM.TYPE] = (byte)(int)TransType.ACK;
 			checksum.CalcChecksum (ref ackBuf, (int)TransSize.ACKSIZE);
 
@@ -114,7 +112,7 @@ namespace TransportLayer
 //				ackBuf[1]++; // Important: Only spoil a checksum-field (ackBuf[0] or ackBuf[1])
 //				Console.WriteLine($"Noise! ack #{_transmitCount} checksum is spoiled in a transmitted ACK-package");
 //			}
-//
+
 			if (_transmitCount == 10)
 				_transmitCount = 0;
 
@@ -171,11 +169,13 @@ namespace TransportLayer
 
 					link.Send(_buffer, size+4);
 
+					// Receive the ack from the receiver
                     receiveAck ();
-
 
 				    Console.WriteLine($"Receiving ack with seqNo #{_ackSeqNo}");
 
+					// If the ack is not equal to seqNo
+					//, the package is not received correctly
 					if (_ackSeqNo != _seqNo) 
 					{
 						Console.WriteLine ("\tError: Did not receive correctly");
@@ -195,16 +195,16 @@ namespace TransportLayer
 				_errorCount++;
 				Console.WriteLine ("\tErrorcount: " + _errorCount + "\n");
 
-			}while ((_errorCount < 5));
+			}while ((_errorCount < 10));
 
-			if (_errorCount >= 5) 
+			if (_errorCount >= 10) 
 			{
 				Console.WriteLine ("With errorcount " + _errorCount + ", I am out.");
 				Environment.Exit (1);
 			}
 
+			// Update seqNo
 			_seqNo = (byte)((_seqNo + 1) % 2);
-
 			_errorCount = 0;
 			_ackSeqNo = DEFAULT_SEQNO;
 		}
@@ -233,7 +233,9 @@ namespace TransportLayer
 						_recvSize = link.Receive (ref _buffer);	//returns length of received byte array
 						if (_recvSize == -1)
 						{
+							// Send NACK and wait for message to be done sending
 							sendAck(false); 
+							System.Threading.Thread.Sleep(200);
 						}
 					} 
 					catch (Exception) 
@@ -243,16 +245,22 @@ namespace TransportLayer
 
 				Console.WriteLine ($"TRANSMIT #{++_transmitCount}");
 
+				// If check is not right, send NACK, else do this
 				if (checksum.CheckChecksum (_buffer, _recvSize)) 
 				{
 					Console.WriteLine ("Data pack OK.");
 
+					// Update seqNo
 					_seqNo = _buffer [(int)TransCHKSUM.SEQNO];
 
+					// Return the received data
 					Array.Copy (_buffer, (int)TransSize.ACKSIZE, buf, 0, _recvSize - (int)TransSize.ACKSIZE);
+
+					// If identical package received, ignore
 					if (_seqNo == _oldSeqNo)
 						Console.WriteLine ("\tReceived identical package. Ignore");
 
+					// Update oldSeqNo and return ACK
 					_oldSeqNo = _seqNo;
 					sendAck (true);
 					return _recvSize - 4;

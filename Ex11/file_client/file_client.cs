@@ -46,9 +46,10 @@ namespace client
 			// Filesize in bytes
 			byte[] fileSize = new byte[BUFSIZE];
 
-			// Receive file s
+			// Receive file size
 			int size = _transport.Receive(ref fileSize);
 
+			// If the file size is equal to 0, resend a new file name
 			while ((LIB.ToString(fileSize).Substring(0, size) == "0"))
 	        {
                 Console.WriteLine($"File {filename} not found. Input a valid file");
@@ -63,6 +64,7 @@ namespace client
 
 			Console.WriteLine ("File size: " + LIB.ToString(fileSize));
 
+			// Receive the file with the file size
 			receiveFile (filename, long.Parse (LIB.ToString (fileSize)), _transport);
 	    }
 		/// <summary>

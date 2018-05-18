@@ -28,9 +28,6 @@ namespace server
 			// Get filename with size of byte 
 		    int size = _transport.Receive(ref filename);
 
-			// Extract file name from the path
-			string filenameStr = LIB.ExtractFileName (LIB.ToString (filename).Substring (0, size));
-
 			Console.WriteLine($"\nFilename {LIB.ToString(filename)}");
 
 			// Check file exist
