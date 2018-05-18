@@ -153,13 +153,13 @@ namespace TransportLayer
 				//Tilføjer de to første "bytes" på buf
 				checksum.CalcChecksum (ref _buffer, _buffer.Length);
 
-//				Console.WriteLine($"TRANSMIT #{++_transmitCount}");
-//
-//				if(_transmitCount == 3) // Simulate noise
-//				{
-//					_buffer[1]++; // Important: Only spoil a checksum-field (buffer[0] or buffer[1])
-//					Console.WriteLine($"Noise! - pack #{_transmitCount} is spoiled");
-//				}
+				Console.WriteLine($"TRANSMIT #{++_transmitCount}");
+
+				if(_transmitCount == 3) // Simulate noise
+				{
+					_buffer[1]++; // Important: Only spoil a checksum-field (buffer[0] or buffer[1])
+					Console.WriteLine($"Noise! - pack #{_transmitCount} is spoiled");
+				}
 
 				if (_transmitCount == 5)
 					_transmitCount = 0;
